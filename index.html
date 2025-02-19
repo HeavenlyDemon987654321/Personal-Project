@@ -42,10 +42,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-size: contain;
+            background-size: cover;
             background-position: center;
             opacity: 0;
-            transition: opacity 1.35s ease-in-out;
+            transition: opacity 0.8s ease-in-out;
         }
 
         button {
@@ -73,14 +73,21 @@
             height: 100%;
             object-fit: cover;
         }
+        
         .content {
-      display: flex; 
-      gap: 20px;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      margin-top: 20px;
-    }
+            display: flex; 
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        a {
+            display: inline-flex;  
+            text-decoration: none;
+        }
+
     </style>
 </head>
 <body>
@@ -90,26 +97,27 @@
     </div>
     <div class="overlay"></div>
     <div class="content">
-        
-        <button onclick="changeBackground('1216575.jpg') ">
+        <a href="GR1.html">
+        <button onmouseover="changeBackground('1216575.jpg')">
             <img src="1216575c.jpg" alt="Button Image">
-        </button>
-        <button onclick="changeBackground('Vamp.jpeg')">
-            <img src="Vampc.jpeg" alt="Button Image">
-        </button>
-        <button onclick="changeBackground('CONTROL.jpeg')">
+        </button></a>
+       <a href="#"><button onmouseover="changeBackground('Vamp.jpeg')">
+        <img src="Vampc.jpeg" alt="Button Image">
+    </button></a> 
+        <a href="#"><button onmouseover="changeBackground('CONTROL.jpeg')">
             <img src="CONTROLc.jpg" alt="Button Image">
-        </button>
-        <button onclick="changeBackground('KILL.jpg')">
+        </button></a>
+        <a href="#"><button onmouseover="changeBackground('KILL.jpg')">
             <img src="KILLP.jpeg" alt="Button Image">
-        </button>
-        <button onclick="changeBackground('deus.jpg')">
+        </button></a>
+        <a href="#"><button onmouseover="changeBackground('deus.jpg')">
             <img src="deusx.jpg" alt="Button Image">
-        </button>
-        <button onclick="changeBackground('ghost2c.jpg')">
+        </button></a>
+        <a href="#"><button onmouseover="changeBackground('ghost2c.jpg')">
             <img src="ghost2.jpg" alt="Button Image">
-        </button> 
-        </div>
+        </button> </a>
+    </div>
+
     <script>
         let activeBg = 1;
 
@@ -129,3 +137,4 @@
     </script>
 </body>
 </html>
+
