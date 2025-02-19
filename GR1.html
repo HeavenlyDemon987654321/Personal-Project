@@ -1,171 +1,160 @@
-<!DOCTYPE html> 
-<html lang="en"> 
+<!DOCTYPE html>
+<html lang="en">
 
-<head> 
-	<meta charset="UTF-8"> 
-	<meta name="viewport" content= 
-		"width=device-width, initial-scale=1.0"> 
-	<style> 
-		body { 
-			font-family: Arial, sans-serif; 
-			margin: 0; 
-			padding: 0; 
-          
-		} 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GR 1 Review</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-		header { 
-			background-color: #5f2e2e; 
-			color:rgb(250, 247, 247); 
-			text-align: center; 
-		} 
+        header {
+            background-color: black;
+            color: rgb(250, 247, 247);
+            text-align: center;
+            padding: 10px;
+        }
 
-		nav { 
-			background-color: #242424; 
-			padding: 10px; 
-		} 
+        nav {
+            background-color: #242424;
+            padding: 10px;
+        }
 
-		nav a { 
-			color: #fff; 
-			text-decoration: none; 
-			padding: 10px; 
-			margin-right: 10px; 
-			display: inline-block; 
-		} 
+        .navbar {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            background: black;
+        }
 
-		.container { 
-			display: flex; 
-			justify-content: space-between; 
-			max-width: 95%; 
-			margin: 0 auto; 
-			padding: 20px; 
-		} 
+        .navbar li {
+            position: relative;
+            padding: 10px 20px;
+        }
 
-		article p { 
-			text-align: justify; 
-		} 
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            display: block;
+        }
 
-		main { 
-			flex: 2; 
-		} 
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgb(0, 0, 0);
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: none;
+            width: 150px;
+            z-index: 10;
+        }
 
-		article { 
-			margin-bottom: 20px; 
-			padding: 10px 20px; 
-			border: 1px solid rgb(145, 145, 145); 
-			margin-right: 10px; 
-		} 
+        .dropdown-menu li {
+            padding: 8px;
+        }
 
-		aside { 
-			flex: 1; 
-			background-color: #c9c9c9; 
-			padding: 10px; 
-		} 
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
 
-		footer { 
-			background-color: #242424; 
-			color: #fff; 
-			text-align: center; 
-			position: fixed; 
-			bottom: 0; 
-			width: 100%; 
-		} 
-      .navbar {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    background: black;
-}
+        .container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 95%;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-.navbar li {
-    position: relative;
-    padding: 10px 20px;
-}
+        main {
+            flex: 2;
+        }
 
-.navbar a {
-    text-decoration: none;
-    color: white;
-    display: block;
-}
+        article {
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            border: 1px solid rgb(145, 145, 145);
+            margin-right: 10px;
+        }
 
-.dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: rgb(0, 0, 0);
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: none;
-    width: 150px;
-}
+        article p {
+            text-align: justify;
+        }
 
-.dropdown-menu li {
-    padding: 1px;
-}
+        aside {
+            flex: 1;
+            background-color: #c9c9c9;
+            padding: 10px;
+        }
 
-.dropdown:hover .dropdown-menu {
-    display: block;
-}
-	</style> 
-	<title>GR 1 Review</title> 
-</head> 
+        footer {
+            background-color: #242424;
+            color: #fff;
+            text-align: center;
+            width: 100%;
+            min-height: 50px;
+            padding: 10px;
+            position: relative;
+        }
+    </style>
+</head>
 
-<body> 
-	<header> 
-		<p>Truly a True Gamer Reviews</p> 
-	</header> 
+<body>
+    <header>
+        <p>Truly a True Gamer Reviews</p>
+    </header>
 
-	<nav>
-    <ul class="navbar">
-        <li><a href="index.html">Home</a></li>
-        <li class="dropdown">
-            <a href="#">Games</a>
-            <ul class="dropdown-menu">
-               <li><a href="#">Ghostrunner 1</a></li> 
-				<li><a href="#">Vampire Surviors</a></li> 
-				<li><a href="#">CONTROL</a></li> 
-				<li><a href="#">Kill Knight</a></li>
-              <li><a href="#">Deus X Mankind Divided</a></li>
-              <li><a href="#">Ghostrunner 2</a></li>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Games</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Vampire Survivors</a></li>
+                    <li><a href="#">CONTROL</a></li>
+                    <li><a href="#">Kill Knight</a></li>
+                    <li><a href="#">Deus Ex: Mankind Divided</a></li>
+                    <li><a href="#">Ghostrunner 2</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Creator</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <main>
+            <article>
+                <h2>Ghostrunner 1</h2>
+                <p class="post-meta">
+                    Published on February 19, 2025 by Heavenly Demon
+                </p>
+                <p>About to write</p>
+            </article>
+        </main>
+
+        <aside>
+            <h2>Other Reviews</h2>
+            <ul>
+                <li><a href="#">Vampire Survivors</a></li>
+                <li><a href="#">CONTROL</a></li>
+                <li><a href="#">Kill Knight</a></li>
+                <li><a href="#">Deus Ex: Mankind Divided</a></li>
+                <li><a href="#">Ghostrunner 2</a></li>
             </ul>
-        </li>
-        <li><a href="#">Creator</a></li>
-        <li><a href="#">Contact</a></li>
-    </ul>
-</nav>
+        </aside>
+    </div>
 
-
-	<div class="container"> 
-		<main> 
-			<article> 
-				<h2>Ghostrunner 1</h2> 
-				<p class="post-meta"> 
-					Published on February 19, 2025 by Heavenly Demon
-				</p> 
-				<p> 
-					About to write
-				</p> 
-			</article> 
-
-			 
-		</main> 
-
-		<aside> 
-			<h2>Other Reviews</h2> 
-			<ul> 
-				<li><a href="#">Vampire Surviors</a></li> 
-				<li><a href="#">CONTROL</a></li> 
-				<li><a href="#">Kill Knight</a></li>
-              <li><a href="#">Deus X Mankind Divided</a></li>
-              <li><a href="#">Ghostrunner 2</a></li>
-              
-			</ul> 
-		</aside> 
-	</div> 
-
-	<footer> 
-		<p>© 2025 Truly True Gamer Reviews. All rights reserved.</p> 
-	</footer> 
-</body> 
+    <footer>
+        <p>© 2025 Truly True Gamer Reviews. All rights reserved.</p>
+    </footer>
+</body>
 
 </html>
+
