@@ -7,8 +7,10 @@
     <title>GR 1 Review</title>
     <style>
         body {
+            background-image: url("1216575.jpg");
             font-family: Arial, sans-serif;
             margin: 0;
+            background-size: cover;
             padding: 0;
         }
 
@@ -91,6 +93,8 @@
             flex: 1;
             background-color: #c9c9c9;
             padding: 10px;
+            background-color: rgba(0, 0, 0, 0);
+            color: white;
         }
 
         footer {
@@ -98,9 +102,30 @@
             color: #fff;
             text-align: center;
             width: 100%;
-            min-height: 50px;
             padding: 10px;
-            position: relative;
+            position: fixed;
+            bottom: 0;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: -1;
+        }
+        h2, p{
+            color: white;
+        }
+        a{
+            text-decoration: none;
+            color: white;
+        }
+        a:hover{
+            color:red;
         }
     </style>
 </head>
@@ -116,22 +141,23 @@
             <li class="dropdown">
                 <a href="#">Games</a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">Vampire Survivors</a></li>
-                    <li><a href="#">CONTROL</a></li>
-                    <li><a href="#">Kill Knight</a></li>
-                    <li><a href="#">Deus Ex: Mankind Divided</a></li>
-                    <li><a href="#">Ghostrunner 2</a></li>
+                    <li><a href="VampS.html">Vampire Survivors</a></li>
+                    <li><a href="CONTROL.html">CONTROL</a></li>
+                    <li><a href="Killk.html">Kill Knight</a></li>
+                    <li><a href="Deusx.html">Deus Ex: Mankind Divided</a></li>
+                    <li><a href="GR2.html">Ghostrunner 2</a></li>
                 </ul>
             </li>
             <li><a href="#">Creator</a></li>
             <li><a href="#">Contact</a></li>
         </ul>
     </nav>
+    <div class="overlay"></div>
 
     <div class="container">
         <main>
             <article>
-                <h2>Ghostrunner 1</h2>
+                <h2>Ghostrunner </h2>
                 <p class="post-meta">
                     Published on February 19, 2025 by Heavenly Demon
                 </p>
@@ -142,11 +168,11 @@
         <aside>
             <h2>Other Reviews</h2>
             <ul>
-                <li><a href="#">Vampire Survivors</a></li>
-                <li><a href="#">CONTROL</a></li>
-                <li><a href="#">Kill Knight</a></li>
-                <li><a href="#">Deus Ex: Mankind Divided</a></li>
-                <li><a href="#">Ghostrunner 2</a></li>
+                <li><a href="VampS.html">Vampire Survivors</a></li>
+                <li><a href="CONTROL.html">CONTROL</a></li>
+                <li><a href="Killk.html">Kill Knight</a></li>
+                <li><a href="Deusx.html">Deus Ex: Mankind Divided</a></li>
+                <li><a href="GR2.html">Ghostrunner 2</a></li>
             </ul>
         </aside>
     </div>
@@ -157,4 +183,3 @@
 </body>
 
 </html>
-
