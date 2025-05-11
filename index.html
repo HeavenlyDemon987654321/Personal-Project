@@ -9,22 +9,49 @@
             width: 100vw;  
             margin: 0; 
             display: flex;
-            flex-direction: row;
-            align-items: center;
+            flex-direction: column;
             position: relative;
             overflow: hidden;
+            align-items: center;
         }
 
-        .overlay {
+        .head {
+            background-color: black;
+            color: rgb(250, 247, 247);
+            text-align: center;
+            padding: 10px;
+            z-index: 10;
+            display: block;
+            width: 100%;
             position: fixed;
             top: 0;
             left: 0;
+        }
+
+        nav {
+            background-color: black;
+            padding: 10px;
+            position: fixed;
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 1;
+            top: 50px;
+            left: 0;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 8px 12px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            background-color: white;
+            color: black;
+            border-radius: 5px;
         }
 
         .background-container {
@@ -48,6 +75,26 @@
             transition: opacity 0.5s ease-in-out;
         }
 
+        .content {
+            display: flex; 
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 185px;
+        }
+
+        .game-item {
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+        }
+        a:hover{
+            color: orange;
+        }
+
         button {
             border: none;
             width: 150px;
@@ -58,13 +105,12 @@
             position: relative;
             z-index: 4;
             padding: 0;
-            border-radius: 10px;
         }
 
         button:hover {
-            width:205px;
+            width: 205px;
             height: 425px;
-            transition:0.65s;
+            transition: 0.65s;
             opacity: 0.8;
         }
 
@@ -73,49 +119,85 @@
             height: 100%;
             object-fit: cover;
         }
-        
-        .content {
-            display: flex; 
-            gap: 20px;
-            justify-content: center;
-            align-items: center;
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            margin-top: 20px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: -1;
         }
-
-        a {
-            display: inline-flex;  
-            text-decoration: none;
-        }
-
     </style>
 </head>
 <body>
+    <header class="head">Truly A True Gamer Reviews</header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="Creator.html">Creator</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
     <div class="background-container">
         <div class="background-image" id="bg1"></div>
         <div class="background-image" id="bg2"></div>
     </div>
     <div class="overlay"></div>
+
     <div class="content">
-        <a href="GR1.html">
-        <button onmouseover="changeBackground('1216575.jpg')">
-            <img src="1216575c.jpg" alt="Button Image">
-        </button></a>
-       <a href="VampS.html"><button onmouseover="changeBackground('Vamp.jpeg')">
-        <img src="Vampc.jpeg" alt="Button Image">
-    </button></a> 
-        <a href="CONTROL.html"><button onmouseover="changeBackground('CONTROL.jpeg')">
-            <img src="CONTROLc.jpg" alt="Button Image">
-        </button></a>
-        <a href="Killk.html"><button onmouseover="changeBackground('KILL.jpg')">
-            <img src="KILLP.jpeg" alt="Button Image">
-        </button></a>
-        <a href="Deusx.html"><button onmouseover="changeBackground('deus.jpg')">
-            <img src="deusx.jpg" alt="Button Image">
-        </button></a>
-        <a href="GR2.html"><button onmouseover="changeBackground('ghost2c.jpg')">
-            <img src="ghost2.jpg" alt="Button Image">
-        </button> </a>
+        <div class="game-item">
+            <a href="GR1.html">
+                <button data-bg="1216575.jpg">
+                    <img src="1216575c.jpg" alt="Button Image">
+                </button>
+            </a>
+            <p>Ghostrunner</p>
+        </div>
+        <div class="game-item">
+            <a href="VampS.html">
+                <button data-bg="Vamp.jpeg">
+                    <img src="Vampc.jpeg" alt="Button Image">
+                </button>
+            </a>
+            <p>Vampire Survivors</p>
+        </div>
+        <div class="game-item">
+            <a href="CONTROL.html">
+                <button data-bg="CONTROL.jpeg">
+                    <img src="CONTROLc.jpg" alt="Button Image">
+                </button>
+            </a>
+            <p>CONTROL</p>
+        </div>
+        <div class="game-item">
+            <a href="Killk.html">
+                <button data-bg="KILL.jpg">
+                    <img src="KILLP.jpeg" alt="Button Image">
+                </button>
+            </a>
+            <p>Kill Knight</p>
+        </div>
+        <div class="game-item">
+            <a href="Deusx.html">
+                <button data-bg="deus.jpg">
+                    <img src="deusx.jpg" alt="Button Image">
+                </button>
+            </a>
+            <p>Deus Ex: Mankind Divided</p>
+        </div>
+        <div class="game-item">
+            <a href="GR2.html">
+                <button data-bg="ghost2c.jpg">
+                    <img src="ghost2.jpg" alt="Button Image">
+                </button>
+            </a>
+            <p>Ghostrunner 2</p>
+        </div>
     </div>
 
     <script>
@@ -134,6 +216,18 @@
 
             activeBg = activeBg === 1 ? 2 : 1;
         }
+
+        function resetBackground() {
+            document.getElementById("bg1").style.opacity = 0;
+            document.getElementById("bg2").style.opacity = 0;
+        }
+
+        document.querySelectorAll("button").forEach(button => {
+            button.addEventListener("mouseover", () => {
+                changeBackground(button.getAttribute("data-bg"));
+            });
+            button.addEventListener("mouseleave", resetBackground);
+        });
     </script>
 </body>
 </html>
