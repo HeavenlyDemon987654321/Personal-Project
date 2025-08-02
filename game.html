@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Review</title>
+    <link rel="stylesheet" href="styles1.css">
+        
+</head>
+
+<body>
+    <header>
+        <p>Truly a True Gamer Reviews</p>
+    </header>
+
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Games</a>
+                <ul class="dropdown-menu">
+                    <li><a href="game.html?id=VampS">Vampire Survivors</a></li>
+                    <li><a href="game.html?id=GR1">Ghostrunner</a></li>
+                    <li><a href="game.html?id=Killk">Kill Knight</a></li>
+                    <li><a href="game.html?id=deusx">Deus Ex: Mankind Divided</a></li>
+                    <li><a href="game.html?id=GR2">Ghostrunner 2</a></li>
+                </ul>
+            </li>
+            <li><a href="Creator.html">Creator</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="overlay"></div>
+
+    <div class="container">
+        <main>
+            <article>
+                <h2 id="game-title"></h2>
+                <p class="post-meta">
+                    Published on February 19, 2025 by Heavenly Demon
+                </p>
+                <p id="game-review"></p>
+            </article>
+        </main>
+
+        <aside>
+            <h2>Other Reviews</h2>
+            <ul>
+                <li><a href="game.html?id=VampS">Vampire Survivors</a></li>
+                <li><a href="game.html?id=GR1">Ghostrunner</a></li>
+                <li><a href="game.html?id=Killk">Kill Knight</a></li>
+                <li><a href="game.html?id=deusx">Deus Ex: Mankind Divided</a></li>
+                <li><a href="game.html?id=GR2">Ghostrunner 2</a></li>
+            </ul>
+        </aside>
+    </div>
+
+    <footer>
+        <p>© 2025 Truly True Gamer Reviews. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const gameId = params.get('id');
+
+            fetch('games.json')
+                .then(response => response.json())
+                .then(games => {
+                    const game = games.find(g => g.id === gameId);
+
+                    if (game) {
+                        document.title = `${game.title} Review`;
+                        document.getElementById('game-title').textContent = game.title;
+                        document.getElementById('game-review').textContent = game.review || 'About to be Published';
+                        document.body.style.backgroundImage = `url('Images/${game.bg}')`;
+                    }
+                });
+        });
+    </script>
+</body>
+
+</html>
