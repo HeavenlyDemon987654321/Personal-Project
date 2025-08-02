@@ -1,138 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
     <title>Games Indeed</title>
-    <style>
-        body {
-            background-color: black; 
-            height: 100vh; 
-            width: 100vw;  
-            margin: 0; 
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-            align-items: center;
-        }
-
-        .head {
-            background-color: black;
-            color: rgb(250, 247, 247);
-            text-align: center;
-            padding: 10px;
-            z-index: 10;
-            display: block;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-        }
-
-        nav {
-            background-color: black;
-            padding: 10px;
-            position: fixed;
-            width: 100%;
-            top: 50px;
-            left: 0;
-            display: flex;
-            gap: 15px;
-            z-index: 100;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            padding: 8px 12px;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            background-color: white;
-            color: black;
-            border-radius: 5px;
-        }
-
-        .background-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .background-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .content {
-            display: flex; 
-            gap: 20px;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            margin-top: 185px;
-        }
-
-        .game-item {
-            text-align: center;
-        }
-
-        a {
-            text-decoration: none;
-        }
-        a:hover{
-            color: orange;
-        }
-
-        button {
-            border: none;
-            width: 150px;
-            height: 375px;
-            cursor: pointer;
-            border-radius: 10px;
-            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            position: relative;
-            z-index: 4;
-            padding: 0;
-        }
-
-        button:hover {
-            width: 205px;
-            height: 425px;
-            transition: 0.65s;
-            opacity: 0.8;
-        }
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: -1;
-        }
-    </style>
+     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header class="head">Truly A True Gamer Reviews</header>
@@ -150,84 +21,59 @@
     </div>
     <div class="overlay"></div>
 
-    <div class="content">
-        <div class="game-item">
-            <a href="GR1.html">
-                <button data-bg="1216575.jpg">
-                    <img src="1216575c.jpg" alt="Button Image">
-                </button>
-            </a>
-            <p>Ghostrunner</p>
-        </div>
-        <div class="game-item">
-            <a href="VampS.html">
-                <button data-bg="Vamp.jpeg">
-                    <img src="Vampc.jpeg" alt="Button Image">
-                </button>
-            </a>
-            <p>Vampire Survivors</p>
-        </div>
-        <div class="game-item">
-            <a href="CONTROL.html">
-                <button data-bg="CONTROL.jpeg">
-                    <img src="CONTROLc.jpg" alt="Button Image">
-                </button>
-            </a>
-            <p>CONTROL</p>
-        </div>
-        <div class="game-item">
-            <a href="Killk.html">
-                <button data-bg="KILL.jpg">
-                    <img src="KILLP.jpeg" alt="Button Image">
-                </button>
-            </a>
-            <p>Kill Knight</p>
-        </div>
-        <div class="game-item">
-            <a href="Deusx.html">
-                <button data-bg="deus.jpg">
-                    <img src="deusx.jpg" alt="Button Image">
-                </button>
-            </a>
-            <p>Deus Ex: Mankind Divided</p>
-        </div>
-        <div class="game-item">
-            <a href="GR2.html">
-                <button data-bg="ghost2c.jpg">
-                    <img src="ghost2.jpg" alt="Button Image">
-                </button>
-            </a>
-            <p>Ghostrunner 2</p>
-        </div>
+    <div class="content" id="game-list-container">
     </div>
 
     <script>
-        let activeBg = 1;
+        document.addEventListener('DOMContentLoaded', () => {
+            const gameListContainer = document.getElementById('game-list-container');
+            fetch('games.json')
+                .then(response => response.json())
+                .then(games => {
+                    games.forEach(game => {
+                        const gameItemHTML = `
+                            <div class="game-item">
+                                <a href="game.html?id=${game.id}">
+                                    <button data-bg="Images/${game.bg}">
+                                        <img src="Images/${game.thumbnail}" alt="${game.title} Poster">
+                                    </button>
+                                </a>
+                                <p>${game.title}</p>
+                            </div>
+                        `;
+                        gameListContainer.innerHTML += gameItemHTML;
+                    });
+                    let activeBg = 1;
+                    function changeBackground(image) {
+                        let bg1 = document.getElementById("bg1");
+                        let bg2 = document.getElementById("bg2");
 
-        function changeBackground(image) {
-            let bg1 = document.getElementById("bg1");
-            let bg2 = document.getElementById("bg2");
+                        let newBg = activeBg === 1 ? bg2 : bg1;
+                        let oldBg = activeBg === 1 ? bg1 : bg2;
 
-            let newBg = activeBg === 1 ? bg2 : bg1;
-            let oldBg = activeBg === 1 ? bg1 : bg2;
+                        newBg.style.backgroundImage = `url('${image}')`;
+                        newBg.style.opacity = 1;
+                        oldBg.style.opacity = 0;
 
-            newBg.style.backgroundImage = `url('${image}')`;
-            newBg.style.opacity = 1;
-            oldBg.style.opacity = 0;
+                        activeBg = activeBg === 1 ? 2 : 1;
+                    }
 
-            activeBg = activeBg === 1 ? 2 : 1;
-        }
+                    function resetBackground() {
+                        document.getElementById("bg1").style.opacity = 0;
+                        document.getElementById("bg2").style.opacity = 0;
+                    }
 
-        function resetBackground() {
-            document.getElementById("bg1").style.opacity = 0;
-            document.getElementById("bg2").style.opacity = 0;
-        }
-
-        document.querySelectorAll("button").forEach(button => {
-            button.addEventListener("mouseover", () => {
-                changeBackground(button.getAttribute("data-bg"));
-            });
-            button.addEventListener("mouseleave", resetBackground);
+                    document.querySelectorAll("button").forEach(button => {
+                        button.addEventListener("mouseover", () => {
+                            changeBackground(button.getAttribute("data-bg"));
+                        });
+                        button.addEventListener("mouseleave", resetBackground);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching game data:', error);
+                    gameListContainer.innerHTML = "<p style='color: white;'>Could not load game list.</p>";
+                });
         });
     </script>
 </body>
