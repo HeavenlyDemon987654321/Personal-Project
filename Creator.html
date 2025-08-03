@@ -169,13 +169,7 @@
 
         <aside>
             <h2>Other Reviews</h2>
-            <ul>
-                <li><a href="game.html?id=GR1">Ghostrunner</a></li>
-                <li><a href="game.html?id=VampS">Vampire Survivors</a></li>
-                <li><a href="game.html?id=CONTROL">CONTROL</a></li>
-                <li><a href="game.html?id=Killk">Kill Knight</a></li>
-                <li><a href="game.html?id=deusx">Deus Ex: Mankind Divided</a></li>
-                <li><a href="game.html?id=GR2">Ghostrunner 2</a></li>
+            <ul id="gameNav">
             </ul>
         </aside>
     </div>
@@ -184,5 +178,21 @@
         <p>© 2025 Truly True Gamer Reviews. All rights reserved.</p>
     </footer>
 </body>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const gameId = params.get('id');
+            const navGameContainer=document.getElementById('gameNav');
 
+            fetch('games.json')
+                .then(response => response.json())
+                .then(games => {
+                    const game = games.find(g => g.id === gameId);
+                    games.forEach(game => {
+                        const navGame=`<li><a href="game.html?id=${game.id}">${game.title}</a></li>`;
+                        navGameContainer.innerHTML+=navGame;
+                    });
+                });
+        });
+    </script>
 </html>
