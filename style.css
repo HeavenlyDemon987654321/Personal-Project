@@ -125,4 +125,8 @@ body {
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             z-index: -1;
+
         }
+p{
+            color:white:
+}
