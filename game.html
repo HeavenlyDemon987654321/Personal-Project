@@ -17,16 +17,6 @@
     <nav>
         <ul class="navbar">
             <li><a href="index.html">Home</a></li>
-            <li class="dropdown">
-                <a href="#">Games</a>
-                <ul class="dropdown-menu">
-                    <li><a href="game.html?id=VampS">Vampire Survivors</a></li>
-                    <li><a href="game.html?id=GR1">Ghostrunner</a></li>
-                    <li><a href="game.html?id=Killk">Kill Knight</a></li>
-                    <li><a href="game.html?id=deusx">Deus Ex: Mankind Divided</a></li>
-                    <li><a href="game.html?id=GR2">Ghostrunner 2</a></li>
-                </ul>
-            </li>
             <li><a href="Creator.html">Creator</a></li>
             <li><a href="#">Contact</a></li>
         </ul>
@@ -46,12 +36,7 @@
 
         <aside>
             <h2>Other Reviews</h2>
-            <ul>
-                <li><a href="game.html?id=VampS">Vampire Survivors</a></li>
-                <li><a href="game.html?id=GR1">Ghostrunner</a></li>
-                <li><a href="game.html?id=Killk">Kill Knight</a></li>
-                <li><a href="game.html?id=deusx">Deus Ex: Mankind Divided</a></li>
-                <li><a href="game.html?id=GR2">Ghostrunner 2</a></li>
+            <ul id="gameNav">
             </ul>
         </aside>
     </div>
@@ -64,6 +49,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
             const gameId = params.get('id');
+            const navGameContainer=document.getElementById('gameNav');
 
             fetch('games.json')
                 .then(response => response.json())
@@ -76,6 +62,10 @@
                         document.getElementById('game-review').textContent = game.review || 'About to be Published';
                         document.body.style.backgroundImage = `url('Images/${game.bg}')`;
                     }
+                    games.forEach(game => {
+                        const navGame=`<li><a href="game.html?id=${game.id}">${game.title}</a></li>`;
+                        navGameContainer.innerHTML+=navGame;
+                    });
                 });
         });
     </script>
