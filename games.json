@@ -40,5 +40,13 @@
         "thumbnail":"ghost2.jpg",
         "title":"Ghostrunner 2",
         "review":"About to be Published"
+    },
+    {
+        "id":"mortal",
+        "bg":"mortal.jpg",
+        "thumbnail":"mortalth.jpg",
+        "title":"Mortal Shell",
+        "review":"About to be Published"    
     }
+
 ]
