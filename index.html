@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    
     <title>Games Indeed</title>
      <link rel="stylesheet" href="style.css">
 </head>
@@ -13,6 +12,14 @@
         <a href="reviews.html">Reviews</a>
         <a href="Creator.html">Creator</a>
         <a href="contact.html">Contact</a>
+        <div style="margin-left: auto; display: flex; align-items: center; gap: 10px;">
+            <select id="sortSelect" style="padding: 5px; border-radius: 4px;">
+                <option value="default">Sort by...</option>
+                <option value="title-asc">Title (A-Z)</option>
+                <option value="title-desc">Title (Z-A)</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="Search for a game..." style="padding: 5px; border-radius: 4px;">
+        </div>
     </nav>
 
     <div class="background-container">
@@ -26,55 +33,88 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const gameListContainer = document.getElementById('game-list-container');
-            fetch('games.json')
-                .then(response => response.json())
-                .then(games => {
-                    games.forEach(game => {
-                        const gameItemHTML = `
-                            <div class="game-item">
-                                <a href="game.html?id=${game.id}">
-                                    <button data-bg="Images/${game.bg}">
-                                        <img src="Images/${game.thumbnail}" alt="${game.title} Poster">
-                                    </button>
-                                </a>
-                                <p>${game.title}</p>
-                            </div>
-                        `;
-                        gameListContainer.innerHTML += gameItemHTML;
-                    });
-                    let activeBg = 1;
-                    function changeBackground(image) {
-                        let bg1 = document.getElementById("bg1");
-                        let bg2 = document.getElementById("bg2");
+    const gameListContainer = document.getElementById('game-list-container');
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
+    let allGames = [];
+    let activeBg = 1;
 
-                        let newBg = activeBg === 1 ? bg2 : bg1;
-                        let oldBg = activeBg === 1 ? bg1 : bg2;
+    fetch('games.json')
+        .then(response => response.json())
+        .then(games => {
+            allGames = games;
+            updateDisplay(); 
+        })
+        .catch(error => console.error('Error fetching game data:', error));
 
-                        newBg.style.backgroundImage = `url('${image}')`;
-                        newBg.style.opacity = 1;
-                        oldBg.style.opacity = 0;
+    function updateDisplay() {
+        let gamesToDisplay = [...allGames];
 
-                        activeBg = activeBg === 1 ? 2 : 1;
-                    }
+        const sortBy = sortSelect.value;
+        if (sortBy === 'title-asc') {
+            gamesToDisplay.sort((a, b) => a.title.localeCompare(b.title));
+        } else if (sortBy === 'title-desc') {
+            gamesToDisplay.sort((a, b) => b.title.localeCompare(a.title));
+        }
 
-                    function resetBackground() {
-                        document.getElementById("bg1").style.opacity = 0;
-                        document.getElementById("bg2").style.opacity = 0;
-                    }
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        if (searchTerm) {
+            gamesToDisplay = gamesToDisplay.filter(game =>
+                game.title.toLowerCase().includes(searchTerm)
+            );
+        }
 
-                    document.querySelectorAll("button").forEach(button => {
-                        button.addEventListener("mouseover", () => {
-                            changeBackground(button.getAttribute("data-bg"));
-                        });
-                        button.addEventListener("mouseleave", resetBackground);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching game data:', error);
-                    gameListContainer.innerHTML = "<p style='color: white;'>Could not load game list.</p>";
-                });
+        displayGames(gamesToDisplay);
+    }
+
+    function displayGames(games) {
+        gameListContainer.innerHTML = '';
+        games.forEach(game => {
+            const gameItemHTML = `
+                <div class="game-item">
+                    <a href="game.html?id=${game.id}">
+                        <button data-bg="Images/${game.bg}">
+                            <img src="Images/${game.thumbnail}" alt="${game.title} Poster">
+                        </button>
+                    </a>
+                    <p>${game.title}</p>
+                </div>
+            `;
+            gameListContainer.innerHTML += gameItemHTML;
         });
+
+        document.querySelectorAll("button[data-bg]").forEach(button => {
+            button.addEventListener("mouseover", () => {
+                changeBackground(button.getAttribute("data-bg"));
+            });
+            button.addEventListener("mouseleave", resetBackground);
+        });
+    }
+
+    function changeBackground(image) {
+        const bg1 = document.getElementById("bg1");
+        const bg2 = document.getElementById("bg2");
+
+        const newBg = activeBg === 1 ? bg2 : bg1;
+        const oldBg = activeBg === 1 ? bg1 : bg2;
+
+        newBg.style.backgroundImage = `url('${image}')`;
+        newBg.style.opacity = 1;
+        oldBg.style.opacity = 0;
+
+        activeBg = activeBg === 1 ? 2 : 1;
+    }
+
+    function resetBackground() {
+        document.getElementById("bg1").style.opacity = 0;
+        document.getElementById("bg2").style.opacity = 0;
+    }
+
+    searchInput.addEventListener('input', updateDisplay);
+    sortSelect.addEventListener('change', updateDisplay);
+});
+
     </script>
 </body>
 </html>
+
