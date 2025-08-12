@@ -1,175 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creator</title>
-    <style>
-        body {
-            background-image: url("Images/Creator.jpg");
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-size: cover;
-            padding: 0;
-        }
-
-        header {
-            background-color: black;
-            color: rgb(250, 247, 247);
-            text-align: center;
-            padding: 10px;
-        }
-
-        nav {
-            background-color: #242424;
-            padding: 10px;
-        }
-
-        .navbar {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            background: black;
-        }
-
-        .navbar li {
-            position: relative;
-            padding: 10px 20px;
-        }
-
-        .navbar a {
-            text-decoration: none;
-            color: white;
-            display: block;
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: rgb(0, 0, 0);
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: none;
-            width: 150px;
-            z-index: 10;
-        }
-
-        .dropdown-menu li {
-            padding: 8px;
-        }
-
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
-
-        .container {
-            display: flex;
-            justify-content: space-between;
-            max-width: 95%;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        main {
-            flex: 2;
-        }
-
-        article {
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            border: 1px solid rgb(145, 145, 145);
-            margin-right: 10px;
-        }
-
-        article p {
-            text-align: justify;
-        }
-
-        aside {
-            flex: 1;
-            background-color: #c9c9c9;
-            padding: 10px;
-            background-color: rgba(0, 0, 0, 0);
-            color: white;
-        }
-
-        footer {
-            background-color: #242424;
-            color: #fff;
-            text-align: center;
-            width: 100%;
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-        }
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: -1;
-        }
-        h2, p{
-            color: white;
-        }
-        a{
-            text-decoration: none;
-            color: white;
-        }
-        a:hover{
-            color:rgb(0, 123, 255);
-        }
-    </style>
+    <title>Creator - Truly a True Gamer Reviews</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
     <header>
-        <p>Truly a True Gamer Reviews</p>
+        <p class="logo">Truly a True Gamer Reviews</p>
+        <nav>
+            <ul class="navbar">
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="javascript:void(0)">Games</a>
+                    <ul class="dropdown-menu" id="games-dropdown">
+                        <!-- Game links will be populated here by script -->
+                    </ul>
+                </li>
+                <li><a href="Creator.html">Creator</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <nav>
-        <ul class="navbar">
-            <li><a href="index.html">Home</a></li>
-            <li class="dropdown">
-                <a href="#">Games</a>
-                <ul class="dropdown-menu">
-                    <li><a href="game.html?id=GR1">Ghostrunner</a></li>
-                    <li><a href="game.html?id=VampS">Vampire Survivors</a></li>
-                    <li><a href="game.html?id=CONTROL">CONTROL</a></li>
-                    <li><a href="game.html?id=Killk">Kill Knight</a></li>
-                    <li><a href="game.html?id=deusx">Deus Ex: Mankind Divided</a></li>
-                    <li><a href="game.html?id=GR2">Ghostrunner 2</a></li>
-                </ul>
-            </li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </nav>
+    <div id="background-wrapper" style="background-image: url('Images/Creator.jpg');"></div>
     <div class="overlay"></div>
 
     <div class="container">
-        <main>
+        <main class="main-content">
             <article>
-                <h2>Creator page </h2>
+                <h2>About the Creator</h2>
                 <p class="post-meta">
                     Published on February 19, 2025 by Heavenly Demon
                 </p>
-                <p>This is a game review website made by Heavenly Demon (me) as an hobby.
-                     These are all personal opinions, so if our thoughts and opinions do not align, please do not start attacking me. </p>
-                     <p>Have a nice day...</p>
+                <p>This is a game review website made by Heavenly Demon (me) as a hobby. These are all personal opinions, so if our thoughts and opinions do not align, please do not start attacking me.</p>
+                <p>Have a nice day...</p>
             </article>
         </main>
 
-        <aside>
+        <aside class="sidebar">
             <h2>Other Reviews</h2>
             <ul id="gameNav">
+                 <!-- Other game reviews will be populated here -->
             </ul>
         </aside>
     </div>
@@ -177,22 +50,24 @@
     <footer>
         <p>© 2025 Truly True Gamer Reviews. All rights reserved.</p>
     </footer>
-</body>
-<script>
+
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            const gameId = params.get('id');
-            const navGameContainer=document.getElementById('gameNav');
+            const navGameContainer = document.getElementById('gameNav');
+            const gamesDropdown = document.getElementById('games-dropdown');
 
             fetch('games.json')
                 .then(response => response.json())
                 .then(games => {
-                    const game = games.find(g => g.id === gameId);
                     games.forEach(game => {
-                        const navGame=`<li><a href="game.html?id=${game.id}">${game.title}</a></li>`;
-                        navGameContainer.innerHTML+=navGame;
+                        const gameLink = `<li><a href="game.html?id=${game.id}">${game.title}</a></li>`;
+                        if(navGameContainer) navGameContainer.innerHTML += gameLink;
+                        if(gamesDropdown) gamesDropdown.innerHTML += gameLink;
                     });
-                });
+                })
+                .catch(error => console.error('Error fetching game data:', error));
         });
     </script>
+</body>
 </html>
+
