@@ -1,120 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Games Indeed</title>
-     <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truly a True Gamer Reviews</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="head">Truly A True Gamer Reviews</header>
-
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="reviews.html">Reviews</a>
-        <a href="Creator.html">Creator</a>
-        <a href="contact.html">Contact</a>
-        <div style="margin-left: auto; display: flex; align-items: center; gap: 10px;">
-            <select id="sortSelect" style="padding: 5px; border-radius: 4px;">
+    <header>
+        <p class="logo">Truly a True Gamer Reviews</p>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="Main.html">Genres</a>
+            <a href="Creator.html">Creator</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div class="nav-tools">
+            <select id="sortSelect">
                 <option value="default">Sort by...</option>
                 <option value="title-asc">Title (A-Z)</option>
                 <option value="title-desc">Title (Z-A)</option>
             </select>
-            <input type="text" id="searchInput" placeholder="Search for a game..." style="padding: 5px; border-radius: 4px;">
+            <input type="text" id="searchInput" placeholder="Search for a game...">
         </div>
-    </nav>
-
+    </header>
+    
     <div class="background-container">
         <div class="background-image" id="bg1"></div>
         <div class="background-image" id="bg2"></div>
     </div>
     <div class="overlay"></div>
 
-    <div class="content" id="game-list-container">
-    </div>
+    <main class="content" id="game-list-container">
+    </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-    const gameListContainer = document.getElementById('game-list-container');
-    const searchInput = document.getElementById('searchInput');
-    const sortSelect = document.getElementById('sortSelect');
-    let allGames = [];
-    let activeBg = 1;
+            const gameListContainer = document.getElementById('game-list-container');
+            const searchInput = document.getElementById('searchInput');
+            const sortSelect = document.getElementById('sortSelect');
+            const urlParams = new URLSearchParams(window.location.search);
+            const filterGenre = urlParams.get('genre');
+            let allGames = [];
 
-    fetch('games.json')
-        .then(response => response.json())
-        .then(games => {
-            allGames = games;
-            updateDisplay(); 
-        })
-        .catch(error => console.error('Error fetching game data:', error));
+            fetch('games.json')
+                .then(response => response.json())
+                .then(games => {
+                    allGames = games;
+                    updateDisplay();
+                })
+                .catch(error => console.error('Error fetching data:', error));
 
-    function updateDisplay() {
-        let gamesToDisplay = [...allGames];
+            function updateDisplay() {
+                let gamesToDisplay = [...allGames];
+                if (filterGenre) {
+                    gamesToDisplay = gamesToDisplay.filter(game => Array.isArray(game.genre) && game.genre.includes(filterGenre));
+                }
 
-        const sortBy = sortSelect.value;
-        if (sortBy === 'title-asc') {
-            gamesToDisplay.sort((a, b) => a.title.localeCompare(b.title));
-        } else if (sortBy === 'title-desc') {
-            gamesToDisplay.sort((a, b) => b.title.localeCompare(a.title));
-        }
+                const sortBy = sortSelect.value;
+                if (sortBy === 'title-asc') {
+                    gamesToDisplay.sort((a, b) => a.title.localeCompare(b.title));
+                } else if (sortBy === 'title-desc') {
+                    gamesToDisplay.sort((a, b) => b.title.localeCompare(a.title));
+                }
 
-        const searchTerm = searchInput.value.toLowerCase().trim();
-        if (searchTerm) {
-            gamesToDisplay = gamesToDisplay.filter(game =>
-                game.title.toLowerCase().includes(searchTerm)
-            );
-        }
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                if (searchTerm) {
+                    gamesToDisplay = gamesToDisplay.filter(game => game.title.toLowerCase().includes(searchTerm));
+                }
+                displayGames(gamesToDisplay);
+            }
 
-        displayGames(gamesToDisplay);
-    }
+            function displayGames(games) {
+                gameListContainer.innerHTML = games.length ? '' : '<p class="no-results">No games found.</p>';
+                games.forEach(game => {
+                    const gameItemHTML = `
+                        <div class="game-item">
+                            <a href="game.html?id=${game.id}" data-bg="Images/${game.bg}">
+                                <img src="Images/${game.thumbnail}" alt="${game.title} Poster">
+                                <p>${game.title}</p>
+                            </a>
+                        </div>
+                    `;
+                    gameListContainer.innerHTML += gameItemHTML;
+                });
 
-    function displayGames(games) {
-        gameListContainer.innerHTML = '';
-        games.forEach(game => {
-            const gameItemHTML = `
-                <div class="game-item">
-                    <a href="game.html?id=${game.id}">
-                        <button data-bg="Images/${game.bg}">
-                            <img src="Images/${game.thumbnail}" alt="${game.title} Poster">
-                        </button>
-                    </a>
-                    <p>${game.title}</p>
-                </div>
-            `;
-            gameListContainer.innerHTML += gameItemHTML;
+                document.querySelectorAll(".game-item a").forEach(link => {
+                    link.addEventListener("mouseover", () => changeBackground(link.getAttribute("data-bg")));
+                    link.addEventListener("mouseleave", resetBackground);
+                });
+            }
+
+            let activeBg = 1;
+            function changeBackground(image) {
+                if (!image) return;
+                const bg1 = document.getElementById("bg1");
+                const bg2 = document.getElementById("bg2");
+                const newBg = activeBg === 1 ? bg2 : bg1;
+                const oldBg = activeBg === 1 ? bg1 : bg2;
+
+                newBg.style.backgroundImage = `url('${image}')`;
+                newBg.style.opacity = 1;
+                oldBg.style.opacity = 0;
+                activeBg = activeBg === 1 ? 2 : 1;
+            }
+
+            function resetBackground() {
+                 document.getElementById("bg1").style.opacity = 0;
+                 document.getElementById("bg2").style.opacity = 0;
+            }
+
+            searchInput.addEventListener('input', updateDisplay);
+            sortSelect.addEventListener('change', updateDisplay);
         });
-
-        document.querySelectorAll("button[data-bg]").forEach(button => {
-            button.addEventListener("mouseover", () => {
-                changeBackground(button.getAttribute("data-bg"));
-            });
-            button.addEventListener("mouseleave", resetBackground);
-        });
-    }
-
-    function changeBackground(image) {
-        const bg1 = document.getElementById("bg1");
-        const bg2 = document.getElementById("bg2");
-
-        const newBg = activeBg === 1 ? bg2 : bg1;
-        const oldBg = activeBg === 1 ? bg1 : bg2;
-
-        newBg.style.backgroundImage = `url('${image}')`;
-        newBg.style.opacity = 1;
-        oldBg.style.opacity = 0;
-
-        activeBg = activeBg === 1 ? 2 : 1;
-    }
-
-    function resetBackground() {
-        document.getElementById("bg1").style.opacity = 0;
-        document.getElementById("bg2").style.opacity = 0;
-    }
-
-    searchInput.addEventListener('input', updateDisplay);
-    sortSelect.addEventListener('change', updateDisplay);
-});
-
     </script>
 </body>
 </html>
-
