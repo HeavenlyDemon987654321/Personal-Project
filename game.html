@@ -1,40 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Review</title>
-    <link rel="stylesheet" href="styles1.css">
-        
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
     <header>
-        <p>Truly a True Gamer Reviews</p>
+        <p class="logo">Truly a True Gamer Reviews</p>
+        <nav>
+            <ul class="navbar">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Creator.html">Creator</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
     </header>
-
-    <nav>
-        <ul class="navbar">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="Creator.html">Creator</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </nav>
+    
+    <div id="background-wrapper"></div>
     <div class="overlay"></div>
 
     <div class="container">
-        <main>
+        <main class="main-content">
             <article>
                 <h2 id="game-title"></h2>
-                <p class="post-meta">
-                    Published on February 19, 2025 by Heavenly Demon
-                </p>
+                <h3 id="game-subtitle"></h3>
+                <p class="post-meta" id="genre"></p>
                 <p id="game-review"></p>
             </article>
         </main>
 
-        <aside>
+        <aside class="sidebar">
             <h2>Other Reviews</h2>
             <ul id="gameNav">
             </ul>
@@ -49,7 +46,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
             const gameId = params.get('id');
-            const navGameContainer=document.getElementById('gameNav');
+            const navGameContainer = document.getElementById('gameNav');
+            const backgroundWrapper = document.getElementById('background-wrapper');
 
             fetch('games.json')
                 .then(response => response.json())
@@ -59,16 +57,22 @@
                     if (game) {
                         document.title = `${game.title} Review`;
                         document.getElementById('game-title').textContent = game.title;
-                        document.getElementById('game-review').textContent = game.review || 'About to be Published';
-                        document.body.style.backgroundImage = `url('Images/${game.bg}')`;
+                        document.getElementById('game-subtitle').textContent = game.alt_title;
+                        document.getElementById('genre').textContent = `Genre: ${Array.isArray(game.genre) ? game.genre.join(', ') : game.genre}`;
+                        document.getElementById('game-review').textContent = game.review || 'Review coming soon.';
+                        if(backgroundWrapper) {
+                            backgroundWrapper.style.backgroundImage = `url('Images/${game.bg}')`;
+                        }
                     }
-                    games.forEach(game => {
-                        const navGame=`<li><a href="game.html?id=${game.id}">${game.title}</a></li>`;
-                        navGameContainer.innerHTML+=navGame;
+
+                    games.forEach(g => {
+                        const navGame = `<li><a href="game.html?id=${g.id}">${g.title}</a></li>`;
+                        if (navGameContainer) navGameContainer.innerHTML += navGame;
                     });
-                });
+                })
+                .catch(error => console.error('Error fetching game data:', error));
         });
     </script>
 </body>
-
 </html>
+
