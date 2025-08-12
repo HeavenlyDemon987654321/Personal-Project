@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genres - Truly a True Gamer Reviews</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body{
+            background-image: url('Images/gameStock.jpg');
+            background-size: cover; /* FIX: Ensures the image covers the whole area */
+            background-position: center; /* FIX: Centers the image */
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <p class="logo">Truly a True Gamer Reviews</p>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="Main.html">Genres</a>
+            <a href="Creator.html">Creator</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <div class="overlay"></div>
+
+    <main id="genres-container">
+        <h1>Select a Genre</h1>
+        <div id="genres-grid"></div>
+    </main>
+    
+    <footer>
+        <p>© 2025 Truly True Gamer Reviews. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const genresGrid = document.getElementById('genres-grid');
+            fetch('games.json')
+                .then(response => response.json())
+                .then(games => {
+                    const genreSet = new Set();
+                    games.forEach(game => {
+                        if (Array.isArray(game.genre)) {
+                            game.genre.forEach(g => genreSet.add(g.trim()));
+                        } else if (typeof game.genre === "string") {
+                            genreSet.add(game.genre.trim());
+                        }
+                    });
+
+                    genreSet.forEach(genre => {
+                        const btn = document.createElement('button');
+                        btn.className = 'genre-btn';
+                        btn.textContent = genre;
+                        btn.onclick = () => { window.location.href = `index.html?genre=${encodeURIComponent(genre)}`; };
+                        genresGrid.appendChild(btn);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error loading games.json:", error);
+                    if(genresGrid) genresGrid.innerHTML = `<p class="no-results">Failed to load genres.</p>`;
+                });
+        });
+    </script>
+</body>
+</html>
