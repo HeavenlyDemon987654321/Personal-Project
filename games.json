@@ -4,49 +4,71 @@
         "bg":"1216575.jpg",
         "thumbnail":"1216575c.jpg",
         "title":"Ghostrunner",
-        "review":"Like this game alot. Hope to see more in the future"
+        "alt_title":"Criminally Underated game people forget about.",
+        "review":"Like this game alot. Hope to see more in the future",
+        "genre":["Action", "Cyberpunk", "Fast-Paced"]
     },
     {
         "id":"VampS",
         "bg":"Vamp.jpeg",
         "thumbnail":"Vampc.jpeg",
         "title":"Vampire Survivors",
-        "review":"About to be Published"
+        "alt_title":"A game that apreciates simplicity.",
+        "review":"About to be Published",
+        "genre":["Rogue-like", "2D"]
     },
     {
         "id":"CONTROL",
         "bg":"CONTROL.jpeg",
         "thumbnail":"CONTROLc.jpg",
         "title":"CONTROL",
-        "review":"About to be Published"
+        "alt_title":"An in depth game people didn't appreciate.",
+        "review":"About to be Published",
+        "genre":["Action", "Supernatural"]
     },
     {
         "id":"Killk",
         "bg":"KILL.jpg",
         "thumbnail":"KILLP.jpeg",
         "title":"Kill Knight",
-        "review":"About to be Published"
+        "alt_title":"An in depth game people didn't appreciate.",
+        "review":"About to be Published",
+        "genre":["Top-down Shooter", "Arcade"]
     },
     {
         "id":"deusx",
         "bg":"deus.jpg",
         "thumbnail":"deusx.jpg",
         "title":"Deus Ex: Mankind Divided",
-        "review":"About to be Published"
+        "alt_title":"A timeless classic, fans of sci-fi and badass combat will definetely like it.",
+        "review":"About to be Published",
+        "genre":["Cyberpunk"," Stealth", "Sci-fi"]
     },
     {
         "id":"GR2",
         "bg":"ghost2c.jpg",
         "thumbnail":"ghost2.jpg",
         "title":"Ghostrunner 2",
-        "review":"About to be Published"
+        "alt_title":"Amazing game, but why it's a downgrade from the first game???",
+        "review":"About to be Published",
+        "genre":["Action", "Cyberpunk", "Fast-Paced"]
     },
     {
         "id":"mortal",
         "bg":"mortal.jpg",
         "thumbnail":"mortalth.jpg",
         "title":"Mortal Shell",
-        "review":"About to be Published"    
+        "alt_title":"A souls-like with ORIGINALTY!!! Waiting for it's sequel now!!!",
+        "review":"About to be Published",
+        "genre": ["Souls-like", "RPG", "Action"]    
+    },
+    {
+        "id":"Palw",
+        "bg":"pald.jpg",
+        "thumbnail":"palwth.jpg",
+        "title":"Palworld",
+        "alt_title":"Of all the monster taming games out there, this is the best one AND IT'S NOT EVEN CLOSE",
+        "review":"About to be Published",
+        "genre":["Open World","Survival","Creature Collector","Crafting"]
     }
-
 ]
