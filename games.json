@@ -22,7 +22,7 @@
         "bg":"CONTROL.jpeg",
         "thumbnail":"CONTROLc.jpg",
         "title":"CONTROL",
-        "alt_title":"An in depth game people didn't appreciate.",
+        "alt_title":"An in depth game people didn't appreciate as much.",
         "review":"About to be Published",
         "genre":["Action", "Supernatural"]
     },
@@ -31,7 +31,7 @@
         "bg":"KILL.jpg",
         "thumbnail":"KILLP.jpeg",
         "title":"Kill Knight",
-        "alt_title":"An in depth game people didn't appreciate.",
+        "alt_title":"Kill Demons, Eat, Sleep, Repeat!!!",
         "review":"About to be Published",
         "genre":["Top-down Shooter", "Arcade"]
     },
@@ -72,4 +72,5 @@
         "genre":["Open World","Survival","Creature Collector","Crafting"]
     }
 ]
+
 
