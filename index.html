@@ -1,4 +1,4 @@
-<!DOCTYPE html
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,6 @@
         <p class="logo">KrovionX</p>
         <nav>
             <a href="index.html">Home</a>
-            <a href="Main.html">Genres</a>
             <a href="Creator.html">Creator</a>
             <a href="contact.html">Contact</a>
         </nav>
@@ -22,6 +21,9 @@
                 <option value="title-desc">Title (Z-A)</option>
             </select>
             <input type="text" id="searchInput" placeholder="Search for a game...">
+            <select id="genreSelect">
+                <option value="all">Filter genres</option>
+            </select>
         </div>
     </header>
     
@@ -39,22 +41,42 @@
             const gameListContainer = document.getElementById('game-list-container');
             const searchInput = document.getElementById('searchInput');
             const sortSelect = document.getElementById('sortSelect');
-            const urlParams = new URLSearchParams(window.location.search);
-            const filterGenre = urlParams.get('genre');
+            const genreSelect = document.getElementById('genreSelect');
             let allGames = [];
 
             fetch('games.json')
                 .then(response => response.json())
                 .then(games => {
                     allGames = games;
+
+                    // Build genres dropdown
+                    const genreSet = new Set();
+                    games.forEach(game => {
+                        if (Array.isArray(game.genre)) {
+                            game.genre.forEach(g => genreSet.add(g.trim()));
+                        } else if (typeof game.genre === "string") {
+                            genreSet.add(game.genre.trim());
+                        }
+                    });
+                    genreSet.forEach(genre => {
+                        const opt = document.createElement("option");
+                        opt.value = genre;
+                        opt.textContent = genre;
+                        genreSelect.appendChild(opt);
+                    });
+
                     updateDisplay();
                 })
                 .catch(error => console.error('Error fetching data:', error));
 
             function updateDisplay() {
                 let gamesToDisplay = [...allGames];
-                if (filterGenre) {
-                    gamesToDisplay = gamesToDisplay.filter(game => Array.isArray(game.genre) && game.genre.includes(filterGenre));
+
+                const selectedGenre = genreSelect.value;
+                if (selectedGenre !== "all") {
+                    gamesToDisplay = gamesToDisplay.filter(game => 
+                        Array.isArray(game.genre) && game.genre.includes(selectedGenre)
+                    );
                 }
 
                 const sortBy = sortSelect.value;
@@ -75,17 +97,20 @@
                 gameListContainer.innerHTML = games.length ? '' : '<p class="no-results">No games found.</p>';
                 games.forEach(game => {
                     const gameItemHTML = `
-                        <div class="game-item">
+                        <div class="game-bar">
                             <a href="game.html?id=${game.id}" data-bg="Images/${game.bg}">
-                                <img src="Images/${game.thumbnail}" alt="${game.title} Poster">
-                                <p>${game.title}</p>
+                                <img src="Images/${game.thumbnail}" alt="${game.title} Thumbnail">
+                                <div class="game-info">
+                                    <h3>${game.title}</h3>
+                                    <p>${game.alt_title}</p>
+                                </div>
                             </a>
                         </div>
                     `;
                     gameListContainer.innerHTML += gameItemHTML;
                 });
 
-                document.querySelectorAll(".game-item a").forEach(link => {
+                document.querySelectorAll(".game-bar a").forEach(link => {
                     link.addEventListener("mouseover", () => changeBackground(link.getAttribute("data-bg")));
                     link.addEventListener("mouseleave", resetBackground);
                 });
@@ -112,8 +137,23 @@
 
             searchInput.addEventListener('input', updateDisplay);
             sortSelect.addEventListener('change', updateDisplay);
+            genreSelect.addEventListener('change', updateDisplay);
         });
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentPage = location.pathname.split('/').pop();
+        const navLinks = document.querySelectorAll('nav a, .navbar a');
+        
+        navLinks.forEach(link => {
+            const linkPage = link.getAttribute('href');
+            if (linkPage === currentPage || 
+                (currentPage === '' && linkPage === 'index.html') ||
+                (currentPage === 'index.html' && linkPage === 'index.html')) {
+                link.classList.add('active');
+            }
+        });
+    });
+</script>
 </body>
 </html>
-
