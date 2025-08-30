@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Review</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <header>
-        <p class="logo">Truly a True Gamer Reviews</p>
+        <p class="logo">KrovionX</p>
         <nav>
             <ul class="navbar">
                 <li><a href="index.html">Home</a></li>
@@ -27,7 +28,7 @@
                 <h2 id="game-title"></h2>
                 <h3 id="game-subtitle"></h3>
                 <p class="post-meta" id="genre"></p>
-                <p id="game-review"></p>
+                <div id="game-review-content"></div> 
             </article>
         </main>
 
@@ -39,7 +40,7 @@
     </div>
 
     <footer>
-        <p>© 2025 Truly True Gamer Reviews. All rights reserved.</p>
+        <p>© KrovionX. All rights reserved.</p>
     </footer>
 
     <script>
@@ -48,6 +49,7 @@
             const gameId = params.get('id');
             const navGameContainer = document.getElementById('gameNav');
             const backgroundWrapper = document.getElementById('background-wrapper');
+            const gameReviewContentDiv = document.getElementById('game-review-content'); // Updated ID
 
             fetch('games.json')
                 .then(response => response.json())
@@ -59,7 +61,19 @@
                         document.getElementById('game-title').textContent = game.title;
                         document.getElementById('game-subtitle').textContent = game.alt_title;
                         document.getElementById('genre').textContent = `Genre: ${Array.isArray(game.genre) ? game.genre.join(', ') : game.genre}`;
-                        document.getElementById('game-review').textContent = game.review || 'Review coming soon.';
+                        
+                        if (game.review_markdown) {
+                            gameReviewContentDiv.innerHTML = marked.parse(game.review_markdown);
+                        } else if (game.review) { 
+                            const pElement = document.createElement('p');
+                            pElement.textContent = game.review;
+                            gameReviewContentDiv.appendChild(pElement);
+                        } else {
+                             const pElement = document.createElement('p');
+                             pElement.textContent = 'Review coming soon.';
+                             gameReviewContentDiv.appendChild(pElement);
+                        }
+                        
                         if(backgroundWrapper) {
                             backgroundWrapper.style.backgroundImage = `url('Images/${game.bg}')`;
                         }
