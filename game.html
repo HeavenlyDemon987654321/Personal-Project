@@ -29,18 +29,27 @@
                 <h3 id="game-subtitle"></h3>
                 <p class="post-meta" id="genre"></p>
                 <div id="game-review-content"></div> 
+
+                <!-- Credits Section -->
+                <div id="game-credits" class="credits"></div>
             </article>
         </main>
 
         <aside class="sidebar">
             <h2>Other Reviews</h2>
-            <ul id="gameNav">
-            </ul>
+            <ul id="gameNav"></ul>
         </aside>
     </div>
 
-    <footer>
-        <p>© KrovionX. All rights reserved.</p>
+    <footer class="site-footer">
+      <div class="footer-links">
+        <a href="/privacy-policy.html">Privacy Policy</a> | 
+        <a href="/terms-of-service.html">Terms of Service</a> | 
+        <a href="/dmca-policy.html">DMCA Policy</a> |
+        <a href="contact.html">Contact</a> |
+        <a href="credits.html">Credits</a>
+      </div>
+      <p>© 2025 KrovionX. All rights reserved.</p>
     </footer>
 
     <script>
@@ -49,7 +58,8 @@
             const gameId = params.get('id');
             const navGameContainer = document.getElementById('gameNav');
             const backgroundWrapper = document.getElementById('background-wrapper');
-            const gameReviewContentDiv = document.getElementById('game-review-content'); // Updated ID
+            const gameReviewContentDiv = document.getElementById('game-review-content');
+            const gameCreditsDiv = document.getElementById('game-credits');
 
             fetch('games.json')
                 .then(response => response.json())
@@ -64,18 +74,22 @@
                         
                         if (game.review_markdown) {
                             gameReviewContentDiv.innerHTML = marked.parse(game.review_markdown);
-                        } else if (game.review) { 
+                        } else if (game.review) {
                             const pElement = document.createElement('p');
                             pElement.textContent = game.review;
                             gameReviewContentDiv.appendChild(pElement);
                         } else {
-                             const pElement = document.createElement('p');
-                             pElement.textContent = 'Review coming soon.';
-                             gameReviewContentDiv.appendChild(pElement);
+                            const pElement = document.createElement('p');
+                            pElement.textContent = 'Review coming soon.';
+                            gameReviewContentDiv.appendChild(pElement);
                         }
                         
-                        if(backgroundWrapper) {
+                        if (backgroundWrapper) {
                             backgroundWrapper.style.backgroundImage = `url('Images/${game.bg}')`;
+                        }
+
+                        if (game.credits) {
+                            gameCreditsDiv.textContent = `Credits: ${game.credits}`;
                         }
                     }
 
