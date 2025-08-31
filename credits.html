@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Credits - KrovionX</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <p class="logo">KrovionX</p>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="Creator.html">Creator</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1>Credits</h1>
+    <ul id="credits-list"></ul>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="/privacy-policy.html">Privacy Policy</a> | 
+      <a href="/terms-of-service.html">Terms of Service</a> | 
+      <a href="/dmca-policy.html">DMCA Policy</a> |
+      <a href="contact.html">Contact</a> |
+      <a href="credits.html">Credits</a>
+    </div>
+    <p>© 2025 KrovionX. All rights reserved.</p>
+  </footer>
+
+  <script>
+    fetch('games.json')
+      .then(response => response.json())
+      .then(games => {
+        const creditsList = document.getElementById('credits-list');
+        games.forEach(game => {
+          if (game.credits) {
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>${game.title}:</strong> ${game.credits}`;
+            creditsList.appendChild(li);
+          }
+        });
+      })
+      .catch(error => console.error('Error loading credits:', error));
+  </script>
+</body>
+</html>
