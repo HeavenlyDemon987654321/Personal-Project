@@ -35,6 +35,17 @@
 
     <main class="content" id="game-list-container">
     </main>
+    
+    <footer class="site-footer">
+        <div class="footer-links">
+            <a href="/privacy-policy.html">Privacy Policy</a> | 
+            <a href="/terms-of-service.html">Terms of Service</a> | 
+            <a href="/dmca-policy.html">DMCA Policy</a> |
+            <a href="contact.html">Contact</a> |
+            <a href="credits.html">Credits</a>
+        </div>
+        <p>© 2025 KrovionX. All rights reserved.</p>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -140,7 +151,9 @@
             genreSelect.addEventListener('change', updateDisplay);
         });
     </script>
+
     <script>
+    // Add active class to current page navigation
     document.addEventListener('DOMContentLoaded', function() {
         const currentPage = location.pathname.split('/').pop();
         const navLinks = document.querySelectorAll('nav a, .navbar a');
@@ -154,6 +167,8 @@
             }
         });
     });
-</script>
+    </script>
 </body>
 </html>
+
+
