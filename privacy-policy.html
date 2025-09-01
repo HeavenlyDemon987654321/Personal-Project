@@ -1,25 +1,33 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Privacy Policy - KrovionX</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Privacy Policy - KrovionX</title>
+<link href="style.css" rel="stylesheet"/>
 </head>
-<body>
-  <main>
-    <h1>Privacy Policy</h1>
-    <p><strong>Last Updated:</strong> 31-08-2025</p>
-
-    <p>KrovionX does not directly collect any personal information from visitors.</p>
-
-    <h2>Cookies & Third-Party Services</h2>
-    <p>We may use third-party services such as Google Analytics or Google AdSense, which may use cookies to track visitor behavior and show relevant ads.</p>
-
-    <h2>Your Control</h2>
-    <p>You can disable cookies in your browser at any time. This may affect how some parts of the site function.</p>
-
-    <h2>Contact Us</h2>
-    <p>If you have any questions, email us at: <a href="mailto:KrovionX@proton.me">KrovionX@proton.me</a></p>
-  </main>
+<body><header><p class="logo">KrovionX</p><nav><a href="index.html">Home</a><a href="Creator.html">Creator</a><a href="contact.html">Contact</a><a href="credits.html">Credits</a></nav></header><div id="background-wrapper"></div><div class="overlay"></div>
+<main>
+<h1>Privacy Policy</h1>
+<p><strong>Last Updated:</strong> 31-08-2025</p>
+<p>KrovionX does not directly collect any personal information from visitors.</p>
+<h2>Cookies &amp; Third-Party Services</h2>
+<p>We may use third-party services such as Google Analytics or Google AdSense, which may use cookies to track visitor behavior and show relevant ads.</p>
+<h2>Your Control</h2>
+<p>You can disable cookies in your browser at any time. This may affect how some parts of the site function.</p>
+<h2>Contact Us</h2>
+<p>If you have any questions, email us at: <a href="mailto:KrovionX@proton.me">KrovionX@proton.me</a></p>
+</main>
+<footer class="site-footer"><div class="footer-links"><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a> | <a href="dmca-policy.html">DMCA Policy</a> | <a href="contact.html">Contact</a> | <a href="credits.html">Credits</a></div><p>© 2025 KrovionX. All rights reserved.</p></footer>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const currentPage = location.pathname.split('/').pop() || 'index.html';
+  const navLinks = document.querySelectorAll('nav a, .navbar a');
+  navLinks.forEach(link => {
+    const linkPage = link.getAttribute('href');
+    if (linkPage === currentPage) link.classList.add('active');
+  });
+});
+</script>
 </body>
 </html>
