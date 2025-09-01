@@ -1,53 +1,23 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KrovionX</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KrovionX</title>
+<link href="style.css" rel="stylesheet"/>
 </head>
-<body>
-    <header>
-        <p class="logo">KrovionX</p>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="Creator.html">Creator</a>
-            <a href="contact.html">Contact</a>
-        </nav>
-        <div class="nav-tools">
-            <select id="sortSelect">
-                <option value="default">Sort by...</option>
-                <option value="title-asc">Title (A-Z)</option>
-                <option value="title-desc">Title (Z-A)</option>
-            </select>
-            <input type="text" id="searchInput" placeholder="Search for a game...">
-            <select id="genreSelect">
-                <option value="all">Filter genres</option>
-            </select>
-        </div>
-    </header>
-    
-    <div class="background-container">
-        <div class="background-image" id="bg1"></div>
-        <div class="background-image" id="bg2"></div>
-    </div>
-    <div class="overlay"></div>
+<body><header><p class="logo">KrovionX</p><nav><a class="active" href="index.html">Home</a><a href="Creator.html">Creator</a><a href="contact.html">Contact</a><a href="credits.html">Credits</a></nav><div class="nav-tools"><select id="sortSelect"><option value="default">Sort by...</option><option value="title-asc">Title (A-Z)</option><option value="title-desc">Title (Z-A)</option></select><input id="searchInput" placeholder="Search for a game..." type="text"/><select id="genreSelect"><option value="all">Filter genres</option></select></div></header>
 
-    <main class="content" id="game-list-container">
-    </main>
-    
-    <footer class="site-footer">
-        <div class="footer-links">
-            <a href="/privacy-policy.html">Privacy Policy</a> | 
-            <a href="/terms-of-service.html">Terms of Service</a> | 
-            <a href="/dmca-policy.html">DMCA Policy</a> |
-            <a href="contact.html">Contact</a> |
-            <a href="credits.html">Credits</a>
-        </div>
-        <p>© 2025 KrovionX. All rights reserved.</p>
-    </footer>
+<div class="background-container">
+<div class="background-image" id="bg1"></div>
+<div class="background-image" id="bg2"></div>
+</div>
+<div class="overlay"></div>
+<main class="content" id="game-list-container">
+</main>
 
-    <script>
+<script>
         document.addEventListener('DOMContentLoaded', () => {
             const gameListContainer = document.getElementById('game-list-container');
             const searchInput = document.getElementById('searchInput');
@@ -152,22 +122,17 @@
         });
     </script>
 
-    <script>
-    // Add active class to current page navigation
-    document.addEventListener('DOMContentLoaded', function() {
-        const currentPage = location.pathname.split('/').pop();
-        const navLinks = document.querySelectorAll('nav a, .navbar a');
-        
-        navLinks.forEach(link => {
-            const linkPage = link.getAttribute('href');
-            if (linkPage === currentPage || 
-                (currentPage === '' && linkPage === 'index.html') ||
-                (currentPage === 'index.html' && linkPage === 'index.html')) {
-                link.classList.add('active');
-            }
-        });
-    });
-    </script>
+<footer class="site-footer"><div class="footer-links"><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a> | <a href="dmca-policy.html">DMCA Policy</a> | <a href="contact.html">Contact</a> | <a href="credits.html">Credits</a></div><p>© 2025 KrovionX. All rights reserved.</p></footer>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const currentPage = location.pathname.split('/').pop() || 'index.html';
+  const navLinks = document.querySelectorAll('nav a, .navbar a');
+  navLinks.forEach(link => {
+    const linkPage = link.getAttribute('href');
+    if (linkPage === currentPage) link.classList.add('active');
+  });
+});
+</script>
 </body>
 </html>
 
