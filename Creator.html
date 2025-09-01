@@ -1,65 +1,38 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creator - KrovionX</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator - KrovionX</title>
+<link href="style.css" rel="stylesheet"/>
 </head>
-<body>
-    <header>
-        <p class="logo">KrovionX</p>
-        <nav>
-            <ul class="navbar">
-                <li><a href="index.html">Home</a></li>
-                <li class="dropdown">
-                    <ul class="dropdown-menu" id="games-dropdown">
-                        <!-- Game links will be populated here by script -->
-                    </ul>
-                </li>
-                <li><a href="Creator.html">Creator</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+<body><header><p class="logo">KrovionX</p><nav><a href="index.html">Home</a><a class="active" href="Creator.html">Creator</a><a href="contact.html">Contact</a><a href="credits.html">Credits</a></nav></header>
 
-    <div id="background-wrapper" style="background-image: url('Images/Creator.jpg');"></div>
-    <div class="overlay"></div>
-
-    <div class="container">
-        <main class="main-content">
-            <article>
-                <h2>About the Creator</h2>
-                <p class="post-meta">
+<div id="background-wrapper" style="background-image: url('Images/Creator.jpg');"></div>
+<div class="overlay"></div>
+<div class="container">
+<main class="main-content">
+<article>
+<h2>About the Creator</h2>
+<p class="post-meta">
                     Published on February 19, 2025 by Heavenly Demon
                 </p>
-                <p>This is a game review website made by Krovion (me) as a hobby.
+<p>This is a game review website made by Krovion (me) as a hobby.
                  These are all personal opinions, so if our thoughts and opinions do not align, please do not start attacking me.
                 As a human, I've biases, and my reviews are heavily biased as well, that doesn't mean I don't give each game some time for it to catch my attention. </p>
-                <p>Have a nice day...</p>
-            </article>
-        </main>
+<p>Have a nice day...</p>
+</article>
+</main>
+<aside class="sidebar">
+<h2>Other Reviews</h2>
+<ul id="gameNav">
+<!-- Other game reviews will be populated here -->
+</ul>
+</aside>
+</div>
 
-        <aside class="sidebar">
-            <h2>Other Reviews</h2>
-            <ul id="gameNav">
-                 <!-- Other game reviews will be populated here -->
-            </ul>
-        </aside>
-    </div>
-
-    <footer class="site-footer">
-  <div class="footer-links">
-    <a href="/privacy-policy.html">Privacy Policy</a> | 
-    <a href="/terms-of-service.html">Terms of Service</a> | 
-    <a href="/dmca-policy.html">DMCA Policy</a> |
-    <a href="contact.html">Contact</a>
-  </div>
-  <p>© 2025 KrovionX. All rights reserved.</p>
-</footer>
-
-
-    <script>
+<script>
         document.addEventListener('DOMContentLoaded', () => {
             const navGameContainer = document.getElementById('gameNav');
             const gamesDropdown = document.getElementById('games-dropdown');
@@ -76,6 +49,18 @@
                 .catch(error => console.error('Error fetching game data:', error));
         });
     </script>
+<footer class="site-footer"><div class="footer-links"><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a> | <a href="dmca-policy.html">DMCA Policy</a> | <a href="contact.html">Contact</a> | <a href="credits.html">Credits</a></div><p>© 2025 KrovionX. All rights reserved.</p></footer>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const currentPage = location.pathname.split('/').pop() || 'index.html';
+  const navLinks = document.querySelectorAll('nav a, .navbar a');
+  navLinks.forEach(link => {
+    const linkPage = link.getAttribute('href');
+    if (linkPage === currentPage) link.classList.add('active');
+  });
+});
+</script>
 </body>
 </html>
+
 
