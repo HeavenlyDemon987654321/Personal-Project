@@ -1,21 +1,122 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Contact - KrovionX</title>
 <link href="style.css" rel="stylesheet"/>
+<style>
+    .contact-form {
+        max-width: 600px;
+        margin: 30px auto;
+        padding: 20px;
+        background: rgba(22, 22, 36, 0.7);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .contact-form label {
+        display: block;
+        margin-bottom: 8px;
+        color: #ccc;
+    }
+    .contact-form input[type="text"],
+    .contact-form input[type="email"],
+    .contact-form textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background-color: rgba(10, 10, 18, 0.8);
+        color: white;
+        font-family: 'Exo 2', sans-serif;
+        font-size: 1em;
+    }
+    .contact-form button {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 6px;
+        background-color: var(--accent-color);
+        color: white;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .contact-form button:hover {
+        background-color: var(--secondary-color);
+    }
+    #form-status {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 6px;
+        text-align: center;
+    }
+    #form-status.success {
+        background-color: rgba(20, 150, 20, 0.3);
+        color: #a4ffaa;
+    }
+    #form-status.error {
+        background-color: rgba(150, 20, 20, 0.3);
+        color: #ffa4a4;
+    }
+</style>
 </head>
-<body><header><p class="logo">KrovionX</p><nav><a href="index.html">Home</a><a href="Creator.html">Creator</a><a class="active" href="contact.html">Contact</a><a href="credits.html">Credits</a></nav></header><div id="background-wrapper"></div><div class="overlay"></div>
+<body>
+<header>
+    <p class="logo"><a href="index.html" class="logo-link">KrovionX</a></p>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="Creator.html">Creator</a>
+        <a class="active" href="contact.html">Contact</a>
+        <a href="credits.html">Credits</a>
+    </nav>
+</header>
+
+<div id="background-wrapper"></div>
+<div class="overlay"></div>
+
 <main class="contact-page">
-<h1>Contact Us</h1>
-<p>If you’d like to get in touch, please email us at:</p>
-<p><a href="mailto:KrovionX@proton.me">KrovionX@proton.me</a></p>
-<h2>DMCA &amp; Legal Requests</h2>
-<p>For copyright or DMCA matters, please refer to our <a href="dmca-policy.html">DMCA Policy</a>.</p>
+    <h1>Contact Us</h1>
+    <p>If you’d like to get in touch, please use the form below or email us directly at: <a href="mailto:KrovionX@proton.me">KrovionX@proton.me</a></p>
+    
+    <!-- Formspree Contact Form -->
+    <form id="contact-form" class="contact-form" action="https://formspree.io/f/xyznkoqv" method="POST">
+        <div>
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="email">Your Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="6" required></textarea>
+        </div>
+        <div>
+            <button type="submit">Send Message</button>
+        </div>
+    </form>
+    <div id="form-status"></div> <!-- To show success/error messages -->
+
+    <h2>DMCA & Legal Requests</h2>
+    <p>For copyright or DMCA matters, please refer to our <a href="dmca-policy.html">DMCA Policy</a>.</p>
 </main>
-<footer class="site-footer"><div class="footer-links"><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a> | <a href="dmca-policy.html">DMCA Policy</a> | <a href="contact.html">Contact</a> | <a href="credits.html">Credits</a></div><p>© 2025 KrovionX. All rights reserved.</p></footer>
+
+<footer class="site-footer">
+    <div class="footer-links">
+        <a href="privacy-policy.html">Privacy Policy</a> | 
+        <a href="terms-of-service.html">Terms of Service</a> | 
+        <a href="dmca-policy.html">DMCA Policy</a> | 
+        <a href="contact.html">Contact</a> | 
+        <a href="credits.html">Credits</a>
+    </div>
+    <p>© 2025 KrovionX. All rights reserved.</p>
+</footer>
+
 <script>
+// This script handles the 'active' class for navigation
 document.addEventListener('DOMContentLoaded', function() {
   const currentPage = location.pathname.split('/').pop() || 'index.html';
   const navLinks = document.querySelectorAll('nav a, .navbar a');
@@ -24,7 +125,42 @@ document.addEventListener('DOMContentLoaded', function() {
     if (linkPage === currentPage) link.classList.add('active');
   });
 });
+
+// This script handles the form submission to show a message without leaving the page
+var form = document.getElementById("contact-form");
+async function handleSubmit(event) {
+    event.preventDefault();
+    var status = document.getElementById("form-status");
+    var data = new FormData(event.target);
+    fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: { 'Accept': 'application/json' }
+    }).then(response => {
+        if (response.ok) {
+            status.innerHTML = "Thanks for your submission!";
+            status.classList.add('success');
+            form.reset();
+        } else {
+            response.json().then(data => {
+                if (Object.hasOwn(data, 'errors')) {
+                    status.innerHTML = data["errors"].map(error => error["message"]).join(", ");
+                } else {
+                    status.innerHTML = "Oops! There was a problem submitting your form";
+                }
+                status.classList.add('error');
+            })
+        }
+    }).catch(error => {
+        status.innerHTML = "Oops! There was a problem submitting your form";
+        status.classList.add('error');
+    });
+}
+form.addEventListener("submit", handleSubmit);
 </script>
+
 </body>
 </html>
+
+
 
