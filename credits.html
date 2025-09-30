@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Credits - KrovionX</title>
+<link href="style.css" rel="stylesheet"/>
+</head>
+<body><header><p class="logo"><a href="index.html">KrovionX</a></p><nav><a href="index.html">Home</a><a href="Creator.html">Creator</a><a href="contact.html">Contact</a><a class="active" href="credits.html">Credits</a></nav></header><div id="background-wrapper"></div><div class="overlay"></div>
+
+<main class="content">
+<h1>Credits</h1>
+<!-- Search bar -->
+<input id="creditSearch" placeholder="Search for a game..." type="text"/>
+<ul id="credits-list"></ul>
+</main>
+
+<script>
+    let allCredits = [];
+
+    fetch('games.json')
+      .then(response => response.json())
+      .then(games => {
+        allCredits = games.filter(game => game.credits);
+        displayCredits(allCredits);
+      })
+      .catch(error => console.error('Error loading credits:', error));
+
+    function displayCredits(games) {
+      const creditsList = document.getElementById('credits-list');
+      creditsList.innerHTML = '';
+      if (!games.length) {
+        creditsList.innerHTML = '<p class="no-results">No games found.</p>';
+        return;
+      }
+      games.forEach(game => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${game.title}:</strong> ${game.credits}`;
+        creditsList.appendChild(li);
+      });
+    }
+
+    // Search functionality
+    document.getElementById('creditSearch').addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase().trim();
+      const filtered = allCredits.filter(game => 
+        game.title.toLowerCase().includes(searchTerm)
+      );
+      displayCredits(filtered);
+    });
+  </script>
+<footer class="site-footer"><div class="footer-links"><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a> | <a href="dmca-policy.html">DMCA Policy</a> | <a href="contact.html">Contact</a> | <a href="credits.html">Credits</a></div><p>© 2025 KrovionX. All rights reserved.</p></footer>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const currentPage = location.pathname.split('/').pop() || 'index.html';
+  const navLinks = document.querySelectorAll('nav a, .navbar a');
+  navLinks.forEach(link => {
+    const linkPage = link.getAttribute('href');
+    if (linkPage === currentPage) link.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
