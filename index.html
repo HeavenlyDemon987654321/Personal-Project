@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KrovionX</title>
+<link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+    <header>
+        <p class="logo"><a href="index.html" class="logo-link">KrovionX</a></p>
+        <nav>
+            <a class="active" href="index.html">Home</a>
+            <a href="Creator.html">Creator</a>
+            <a href="contact.html">Contact</a>
+            <a href="credits.html">Credits</a>
+        </nav>
+
+        <div class="nav-tools">
+            <input id="searchInput" placeholder="Search for a game..." type="text" aria-label="Search games"/>
+            <button id="filterButton" aria-haspopup="true" aria-controls="filterDrawer" aria-expanded="false">
+                Filters <span id="filterBadge" class="filter-badge" aria-hidden="true"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Drawer overlay (starts hidden; shown only when drawer opens) -->
+    <div id="drawerOverlay" class="drawer-overlay" tabindex="-1" aria-hidden="true"></div>
+
+    <!-- Right-side Drawer -->
+    <aside id="filterDrawer" class="filter-drawer" aria-hidden="true" aria-label="Filters drawer">
+        <div class="drawer-header">
+            <h3>Filters</h3>
+            <button id="closeDrawer" class="drawer-close" aria-label="Close filters">&times;</button>
+        </div>
+
+        <div class="drawer-body">
+            <section class="drawer-section">
+                <label for="drawerSort" class="drawer-label">Sort By</label>
+                <select id="drawerSort" class="drawer-select" aria-label="Sort games">
+                    <option value="default">Relevance</option>
+                    <option value="title-asc">Title (A → Z)</option>
+                    <option value="title-desc">Title (Z → A)</option>
+                    <option value="release-desc">Release Date (Newest)</option>
+                    <option value="release-asc">Release Date (Oldest)</option>
+                    <option value="review-date-desc">Reviewed Date (Newest)</option>
+                    <option value="personal-rating-desc">Personal Rating (High → Low)</option>
+                </select>
+            </section>
+
+            <section class="drawer-section">
+                <div class="drawer-section-title">Genres</div>
+                <div id="genresList" class="checkbox-list" role="group" aria-label="Genres">
+                    <div class="loading-ghost">Loading genres…</div>
+                </div>
+            </section>
+
+            <section class="drawer-section">
+                <div class="drawer-section-title">Tags</div>
+                <div id="tagsList" class="checkbox-list" role="group" aria-label="Tags">
+                    <div class="loading-ghost">Loading tags…</div>
+                </div>
+            </section>
+
+            <section class="drawer-section">
+                <div class="drawer-section-title">Release Date / Era</div>
+                <div class="preset-buttons">
+                    <button class="preset-btn" data-from="" data-to="">Any</button>
+                    <button class="preset-btn" data-from="2024" data-to="2025">Last year</button>
+                    <button class="preset-btn" data-from="2020" data-to="2025">Last 5 years</button>
+                    <button class="preset-btn" data-from="" data-to="2014">Classic (Before 2015)</button>
+                </div>
+                <div class="year-range">
+                    <label>From
+                        <input type="number" id="yearFrom" min="1970" max="2100" placeholder="e.g. 2010" aria-label="Year from">
+                    </label>
+                    <label>To
+                        <input type="number" id="yearTo" min="1970" max="2100" placeholder="e.g. 2024" aria-label="Year to">
+                    </label>
+                </div>
+            </section>
+        </div>
+
+        <div class="drawer-footer">
+            <button id="clearFilters" class="btn btn-secondary">Clear</button>
+            <button id="closeApply" class="btn btn-primary">Close</button>
+        </div>
+    </aside>
+
+    <div class="background-container">
+        <div class="background-image" id="bg1"></div>
+        <div class="background-image" id="bg2"></div>
+    </div>
+    <div class="overlay"></div>
+
+    <main class="content" id="game-list-container" aria-live="polite"></main>
+
+    <script>
+    // INDEX: filters + dynamic genres & tags (multi-select), fully self-contained
+    document.addEventListener('DOMContentLoaded', () => {
+        const gameListContainer = document.getElementById('game-list-container');
+        const searchInput = document.getElementById('searchInput');
+        const filterButton = document.getElementById('filterButton');
+        const filterBadge = document.getElementById('filterBadge');
+        const filterDrawer = document.getElementById('filterDrawer');
+        const drawerOverlay = document.getElementById('drawerOverlay');
+        const closeDrawerBtn = document.getElementById('closeDrawer');
+        const closeApplyBtn = document.getElementById('closeApply');
+        const clearFiltersBtn = document.getElementById('clearFilters');
+
+        const drawerSort = document.getElementById('drawerSort');
+        const genresList = document.getElementById('genresList');
+        const tagsList = document.getElementById('tagsList');
+        const yearFromInput = document.getElementById('yearFrom');
+        const yearToInput = document.getElementById('yearTo');
+        const presetButtons = Array.from(document.querySelectorAll('.preset-btn'));
+
+        let allGames = [];
+
+        // State for filters
+        const state = {
+            selectedGenres: new Set(),
+            selectedTags: new Set(),
+            yearFrom: null,
+            yearTo: null,
+            sortBy: 'default'
+        };
+
+        // Utility: parse release year from game object
+        function getGameYear(game) {
+            if (typeof game.year === 'number') return game.year;
+            if (game.released) {
+                const num = parseInt(String(game.released).slice(0,4), 10);
+                if (!isNaN(num)) return num;
+            }
+            return null;
+        }
+
+        // Drawer toggles
+        function openDrawer() {
+            filterDrawer.classList.add('open');
+            drawerOverlay.classList.add('visible');
+            drawerOverlay.setAttribute('aria-hidden', 'false');
+            filterButton.setAttribute('aria-expanded', 'true');
+            filterDrawer.setAttribute('aria-hidden', 'false');
+            setTimeout(() => {
+                const firstInput = filterDrawer.querySelector('select, input, button');
+                if (firstInput) firstInput.focus();
+            }, 150);
+        }
+        function closeDrawer() {
+            filterDrawer.classList.remove('open');
+            drawerOverlay.classList.remove('visible');
+            drawerOverlay.setAttribute('aria-hidden', 'true');
+            filterButton.setAttribute('aria-expanded', 'false');
+            filterDrawer.setAttribute('aria-hidden', 'true');
+            filterButton.focus();
+        }
+
+        filterButton.addEventListener('click', () => {
+            const open = filterDrawer.classList.contains('open');
+            if (open) closeDrawer(); else openDrawer();
+        });
+        closeDrawerBtn.addEventListener('click', closeDrawer);
+        closeApplyBtn.addEventListener('click', closeDrawer);
+        drawerOverlay.addEventListener('click', closeDrawer);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && filterDrawer.classList.contains('open')) {
+                closeDrawer();
+            }
+        });
+
+        // Fetch games.json and populate genres & tags
+        fetch('games.json')
+            .then(resp => resp.json())
+            .then(games => {
+                allGames = Array.isArray(games) ? games : [];
+                populateFacets(allGames);
+                updateDisplay();
+            })
+            .catch(err => {
+                console.error('Error fetching games.json', err);
+                allGames = [];
+                populateFacets([]);
+                updateDisplay();
+            });
+
+        function populateFacets(games) {
+            const genreSet = new Set();
+            const tagSet = new Set();
+
+            games.forEach(game => {
+                // genres
+                if (Array.isArray(game.genre)) {
+                    game.genre.forEach(g => {
+                        if (g && typeof g === 'string') genreSet.add(g.trim());
+                    });
+                } else if (typeof game.genre === 'string' && game.genre.trim()) {
+                    // support CSV too
+                    game.genre.split(',').forEach(g => { if (g.trim()) genreSet.add(g.trim()); });
+                }
+                // tags
+                if (Array.isArray(game.tags)) {
+                    game.tags.forEach(t => {
+                        if (t && typeof t === 'string') tagSet.add(t.trim());
+                    });
+                } else if (typeof game.tags === 'string' && game.tags.trim()) {
+                    game.tags.split(',').forEach(t => { if (t.trim()) tagSet.add(t.trim()); });
+                }
+            });
+
+            // Render genres (checkbox style)
+            genresList.innerHTML = '';
+            Array.from(genreSet).sort((a,b) => a.localeCompare(b)).forEach(genre => {
+                const id = 'genre_' + slug(genre);
+                const wrapper = document.createElement('label');
+                wrapper.className = 'checkbox-item';
+                wrapper.innerHTML = `
+                    <input type="checkbox" data-value="${escapeHtml(genre)}" id="${id}" />
+                    <span>${escapeHtml(genre)}</span>
+                `;
+                const input = wrapper.querySelector('input');
+                input.addEventListener('change', () => {
+                    if (input.checked) state.selectedGenres.add(genre);
+                    else state.selectedGenres.delete(genre);
+                    updateBadge();
+                    updateDisplay();
+                });
+                genresList.appendChild(wrapper);
+            });
+            if (genreSet.size === 0) genresList.innerHTML = '<div class="empty-msg">No genres available</div>';
+
+            // Render tags exactly like genres (multi-select checkboxes)
+            tagsList.innerHTML = '';
+            Array.from(tagSet).sort((a,b) => a.localeCompare(b)).forEach(tag => {
+                const id = 'tag_' + slug(tag);
+                const wrapper = document.createElement('label');
+                wrapper.className = 'checkbox-item';
+                wrapper.innerHTML = `
+                    <input type="checkbox" data-value="${escapeHtml(tag)}" id="${id}" />
+                    <span>${escapeHtml(tag)}</span>
+                `;
+                const input = wrapper.querySelector('input');
+                input.addEventListener('change', () => {
+                    if (input.checked) state.selectedTags.add(tag);
+                    else state.selectedTags.delete(tag);
+                    updateBadge();
+                    updateDisplay();
+                });
+                tagsList.appendChild(wrapper);
+            });
+            if (tagSet.size === 0) tagsList.innerHTML = '<div class="empty-msg">No tags available</div>';
+
+            // Wire preset buttons
+            presetButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const from = btn.getAttribute('data-from');
+                    const to = btn.getAttribute('data-to');
+                    if (!from && !to) {
+                        yearFromInput.value = '';
+                        yearToInput.value = '';
+                        state.yearFrom = null;
+                        state.yearTo = null;
+                    } else {
+                        yearFromInput.value = from || '';
+                        yearToInput.value = to || '';
+                        state.yearFrom = from ? Number(from) : null;
+                        state.yearTo = to ? Number(to) : null;
+                    }
+                    updateBadge();
+                    updateDisplay();
+                });
+            });
+
+            // Year inputs
+            yearFromInput.addEventListener('input', () => {
+                const v = parseInt(yearFromInput.value, 10);
+                state.yearFrom = isNaN(v) ? null : v;
+                updateBadge();
+                updateDisplay();
+            });
+            yearToInput.addEventListener('input', () => {
+                const v = parseInt(yearToInput.value, 10);
+                state.yearTo = isNaN(v) ? null : v;
+                updateBadge();
+                updateDisplay();
+            });
+
+            // Sort
+            drawerSort.addEventListener('change', () => {
+                state.sortBy = drawerSort.value;
+                updateBadge();
+                updateDisplay();
+            });
+
+            // Clear filters
+            clearFiltersBtn.addEventListener('click', () => {
+                state.selectedGenres.clear();
+                state.selectedTags.clear();
+                state.yearFrom = null;
+                state.yearTo = null;
+                state.sortBy = 'default';
+                Array.from(genresList.querySelectorAll('input[type="checkbox"]')).forEach(i => i.checked = false);
+                Array.from(tagsList.querySelectorAll('input[type="checkbox"]')).forEach(i => i.checked = false);
+                yearFromInput.value = '';
+                yearToInput.value = '';
+                drawerSort.value = 'default';
+                updateBadge();
+                updateDisplay();
+            });
+
+            updateBadge();
+        }
+
+        // Escape HTML helper for safety in labels
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, function(m) {
+                return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+            });
+        }
+        function slug(s) {
+            return String(s).toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9\-]/g,'');
+        }
+
+        // update badge (count active filters)
+        function updateBadge() {
+            let count = 0;
+            count += state.selectedGenres.size;
+            count += state.selectedTags.size;
+            if (state.yearFrom !== null || state.yearTo !== null) count++;
+            if (state.sortBy && state.sortBy !== 'default') count++;
+            if (count > 0) {
+                filterBadge.textContent = count;
+                filterBadge.classList.add('visible');
+                filterBadge.setAttribute('aria-hidden','false');
+            } else {
+                filterBadge.textContent = '';
+                filterBadge.classList.remove('visible');
+                filterBadge.setAttribute('aria-hidden','true');
+            }
+        }
+
+        // Core: update display according to state + search + sort
+        function updateDisplay() {
+            let gamesToDisplay = [...allGames];
+
+            // Search
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            if (searchTerm) {
+                gamesToDisplay = gamesToDisplay.filter(game => (game.title || '').toLowerCase().includes(searchTerm));
+            }
+
+            // Genres (OR logic)
+            if (state.selectedGenres.size > 0) {
+                const genresArr = Array.from(state.selectedGenres);
+                gamesToDisplay = gamesToDisplay.filter(game => {
+                    if (Array.isArray(game.genre)) {
+                        return game.genre.some(g => genresArr.includes(g));
+                    } else if (typeof game.genre === 'string') {
+                        // CSV support
+                        return game.genre.split(',').map(x=>x.trim()).some(g => genresArr.includes(g));
+                    }
+                    return false;
+                });
+            }
+
+            // Tags (OR logic) - now behaves exactly like genres
+            if (state.selectedTags.size > 0) {
+                const tagsArr = Array.from(state.selectedTags);
+                gamesToDisplay = gamesToDisplay.filter(game => {
+                    if (Array.isArray(game.tags)) {
+                        return game.tags.some(t => tagsArr.includes(t));
+                    } else if (typeof game.tags === 'string') {
+                        return game.tags.split(',').map(x=>x.trim()).some(t => tagsArr.includes(t));
+                    }
+                    return false;
+                });
+            }
+
+            // Release year range
+            if (state.yearFrom !== null || state.yearTo !== null) {
+                const from = state.yearFrom;
+                const to = state.yearTo;
+                gamesToDisplay = gamesToDisplay.filter(game => {
+                    const y = getGameYear(game);
+                    if (y === null) return false;
+                    if (from !== null && y < from) return false;
+                    if (to !== null && y > to) return false;
+                    return true;
+                });
+            }
+
+            // Sorting
+            const sortBy = state.sortBy || 'default';
+            if (sortBy === 'title-asc') {
+                gamesToDisplay.sort((a,b) => (a.title||'').localeCompare(b.title||''));
+            } else if (sortBy === 'title-desc') {
+                gamesToDisplay.sort((a,b) => (b.title||'').localeCompare(a.title||''));
+            } else if (sortBy === 'release-desc') {
+                gamesToDisplay.sort((a,b) => (getGameYear(b) || 0) - (getGameYear(a) || 0));
+            } else if (sortBy === 'release-asc') {
+                gamesToDisplay.sort((a,b) => (getGameYear(a) || 0) - (getGameYear(b) || 0));
+            } else if (sortBy === 'review-date-desc') {
+                gamesToDisplay.sort((a,b) => {
+                    const da = a.review_date ? Date.parse(a.review_date) : 0;
+                    const db = b.review_date ? Date.parse(b.review_date) : 0;
+                    return db - da;
+                });
+            } else if (sortBy === 'personal-rating-desc') {
+                gamesToDisplay.sort((a,b) => (b.personal_rating || 0) - (a.personal_rating || 0));
+            }
+
+            displayGames(gamesToDisplay);
+        }
+
+        function displayGames(games) {
+            gameListContainer.innerHTML = games.length ? '' : '<p class="no-results">No games found.</p>';
+            games.forEach(game => {
+                const gTitle = escapeHtml(game.title || 'Untitled');
+                const gAlt = escapeHtml(game.alt_title || '');
+                const thumb = game.thumbnail ? `Images/${game.thumbnail}` : '';
+                const bg = game.bg ? `Images/${game.bg}` : '';
+
+                const gameItem = document.createElement('div');
+                gameItem.className = 'game-bar';
+                gameItem.innerHTML = `
+                    <a href="game.html?id=${encodeURIComponent(game.id || '')}" data-bg="${bg}">
+                        <img src="${thumb}" alt="${gTitle} thumbnail">
+                        <div class="game-info">
+                            <h3>${gTitle}</h3>
+                            <p>${gAlt}</p>
+                        </div>
+                    </a>
+                `;
+                gameListContainer.appendChild(gameItem);
+            });
+
+            // wire hover background changes
+            document.querySelectorAll(".game-bar a").forEach(link => {
+                link.addEventListener("mouseover", () => changeBackground(link.getAttribute("data-bg")));
+                link.addEventListener("mouseleave", resetBackground);
+            });
+        }
+
+        // Background switching
+        let activeBg = 1;
+        function changeBackground(image) {
+            if (!image) return;
+            const bg1 = document.getElementById("bg1");
+            const bg2 = document.getElementById("bg2");
+            const newBg = activeBg === 1 ? bg2 : bg1;
+            const oldBg = activeBg === 1 ? bg1 : bg2;
+
+            newBg.style.backgroundImage = `url('${image}')`;
+            newBg.style.opacity = 1;
+            oldBg.style.opacity = 0;
+            activeBg = activeBg === 1 ? 2 : 1;
+        }
+
+        function resetBackground() {
+            document.getElementById("bg1").style.opacity = 0;
+            document.getElementById("bg2").style.opacity = 0;
+        }
+
+        // Wire search input (debounced)
+        let searchTimer = null;
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => updateDisplay(), 220);
+        });
+
+    });
+    </script>
+
+<footer class="site-footer">
+    <div class="footer-links">
+        <a href="privacy-policy.html">Privacy Policy</a> | 
+        <a href="terms-of-service.html">Terms of Service</a> | 
+        <a href="dmca-policy.html">DMCA Policy</a> | 
+        <a href="contact.html">Contact</a> | 
+        <a href="credits.html">Credits</a> | 
+        <a href="cookie.html">Cookie Policy</a>
+    </div>
+    <p>© 2025 KrovionX. All rights reserved.</p>
+</footer>
+</body>
+</html>

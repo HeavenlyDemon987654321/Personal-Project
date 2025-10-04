@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator - KrovionX</title>
+<link href="style.css" rel="stylesheet"/>
+</head>
+<body><header><p class="logo"><a href="index.html">KrovionX</a></p><nav><a href="index.html">Home</a><a class="active" href="Creator.html">Creator</a><a href="contact.html">Contact</a><a href="credits.html">Credits</a></nav></header>
+
+<div id="background-wrapper" style="background-image: url('Images/Creator.jpg');"></div>
+<div class="overlay"></div>
+<div class="container">
+<main class="main-content">
+<article>
+<h2>About the Creator</h2>
+<p class="post-meta">
+                    Published on February 19, 2025 by Heavenly Demon
+                </p>
+<p>This is a game review website made by Krovion (me) as a hobby.
+                 These are all personal opinions, so if our thoughts and opinions do not align, please do not start attacking me.
+                As a human, I've biases, and my reviews are heavily biased as well, that doesn't mean I don't give each game some time for it to catch my attention. </p>
+<p>Have a nice day...</p>
+</article>
+</main>
+<aside class="sidebar">
+<h2>Other Reviews</h2>
+<ul id="gameNav">
+<!-- Other game reviews will be populated here -->
+</ul>
+</aside>
+</div>
+
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navGameContainer = document.getElementById('gameNav');
+            const gamesDropdown = document.getElementById('games-dropdown');
+
+            fetch('games.json')
+                .then(response => response.json())
+                .then(games => {
+                    games.forEach(game => {
+                        const gameLink = `<li><a href="game.html?id=${game.id}">${game.title}</a></li>`;
+                        if(navGameContainer) navGameContainer.innerHTML += gameLink;
+                        if(gamesDropdown) gamesDropdown.innerHTML += gameLink;
+                    });
+                })
+                .catch(error => console.error('Error fetching game data:', error));
+        });
+    </script>
+    <footer class="site-footer">
+    <div class="footer-links">
+        <a href="privacy-policy.html">Privacy Policy</a> | 
+        <a href="terms-of-service.html">Terms of Service</a> | 
+        <a href="dmca-policy.html">DMCA Policy</a> | 
+        <a href="contact.html">Contact</a> | 
+        <a href="credits.html">Credits</a> | 
+        <a href="cookie.html">Cookie Policy</a>
+    </div>
+    <p>© 2025 KrovionX. All rights reserved.</p>
+</footer>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const currentPage = location.pathname.split('/').pop() || 'index.html';
+  const navLinks = document.querySelectorAll('nav a, .navbar a');
+  navLinks.forEach(link => {
+    const linkPage = link.getAttribute('href');
+    if (linkPage === currentPage) link.classList.add('active');
+  });
+});
+</script>
+<!-- Osano Cookie Consent Banner START (Compliant Version) -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+// This function will contain all scripts that set non-essential cookies.
+// It is called only AFTER the user clicks "Accept".
+function runCookieDependentScripts() {
+    console.log("Cookie consent has been given. Running ad and analytics scripts.");
+
+    // IMPORTANT: When you get your scripts from Google AdSense and Google Analytics,
+    // you will paste them here. Do NOT put them in the <head> of your document.
+    
+    // --- PASTE GOOGLE ANALYTICS SCRIPT HERE ---
+    
+
+
+    // --- PASTE GOOGLE ADSENSE SCRIPT HERE ---
+    
+}
+
+// Initialize the cookie consent banner
+window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+      // --- VISUAL SETTINGS ---
+      "palette": {
+        "popup": {
+          "background": "#161624", 
+          "text": "#dddddd"       
+        },
+        "button": {
+          "background": "#e01515", 
+          "text": "#ffffff"       
+        }
+      },
+      "theme": "classic",             
+      "position": "bottom-right",     
+
+      
+      "type": "opt-in", 
+
+      // --- TEXT & LINKS ---
+      "content": {
+        "message": "This site uses cookies for analytics and personalized advertising. By clicking “Accept”, you agree to their use.",
+        "allow": "Accept",
+        "deny": "Decline",
+        "link": "Learn More",
+        "href": "cookie.html" 
+      },
+
+      // --- CONSENT LOGIC ---
+      
+      onStatusChange: function(status) {
+        if (this.hasConsented()) {
+          runCookieDependentScripts();
+        }
+      },
+
+      onInitialise: function(status) {
+        if (this.hasConsented()) {
+          runCookieDependentScripts();
+        }
+      }
+    });
+});
+</script>
+<!-- Osano Cookie Consent Banner END -->
+</body>
+</html>

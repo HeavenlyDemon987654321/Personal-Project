@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Game Review</title>
+<link href="style.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body><header><p class="logo"><a href="index.html">KrovionX</a></p><nav><a href="index.html">Home</a><a href="Creator.html">Creator</a><a href="contact.html">Contact</a><a href="credits.html">Credits</a></nav></header>
+
+<div id="background-wrapper"></div>
+<div class="overlay"></div>
+<div class="container">
+<main class="main-content">
+<article>
+<h2 id="game-title"></h2>
+<h3 id="game-subtitle"></h3>
+<p class="post-meta" id="genre"></p>
+<div id="game-review-content"></div>
+<!-- Credits Section -->
+<div class="credits" id="game-credits"></div>
+</article>
+</main>
+<aside class="sidebar">
+<h2>Other Reviews</h2>
+<ul id="gameNav"></ul>
+</aside>
+</div>
+
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const gameId = params.get('id');
+            const navGameContainer = document.getElementById('gameNav');
+            const backgroundWrapper = document.getElementById('background-wrapper');
+            const gameReviewContentDiv = document.getElementById('game-review-content');
+            const gameCreditsDiv = document.getElementById('game-credits');
+
+            fetch('games.json')
+                .then(response => response.json())
+                .then(games => {
+                    const game = games.find(g => g.id === gameId);
+
+                    if (game) {
+                        document.title = `${game.title} Review`;
+                        document.getElementById('game-title').textContent = game.title;
+                        document.getElementById('game-subtitle').textContent = game.alt_title;
+                        document.getElementById('genre').textContent = `Genre: ${Array.isArray(game.genre) ? game.genre.join(', ') : game.genre}`;
+                        
+                        if (game.review_markdown) {
+                            gameReviewContentDiv.innerHTML = marked.parse(game.review_markdown);
+                        } else if (game.review) {
+                            const pElement = document.createElement('p');
+                            pElement.textContent = game.review;
+                            gameReviewContentDiv.appendChild(pElement);
+                        } else {
+                            const pElement = document.createElement('p');
+                            pElement.textContent = 'Review coming soon.';
+                            gameReviewContentDiv.appendChild(pElement);
+                        }
+                        
+                        if (backgroundWrapper) {
+                            backgroundWrapper.style.backgroundImage = `url('Images/${game.bg}')`;
+                        }
+
+                        if (game.credits) {
+                            gameCreditsDiv.textContent = `Credits: ${game.credits}`;
+                        }
+                    }
+
+                    games.forEach(g => {
+                        const navGame = `<li><a href="game.html?id=${g.id}">${g.title}</a></li>`;
+                        if (navGameContainer) navGameContainer.innerHTML += navGame;
+                    });
+                })
+                .catch(error => console.error('Error fetching game data:', error));
+        });
+    </script>
+<footer class="site-footer">
+    <div class="footer-links">
+        <a href="privacy-policy.html">Privacy Policy</a> | 
+        <a href="terms-of-service.html">Terms of Service</a> | 
+        <a href="dmca-policy.html">DMCA Policy</a> | 
+        <a href="contact.html">Contact</a> | 
+        <a href="credits.html">Credits</a> | 
+        <a href="cookie.html">Cookie Policy</a>
+    </div>
+    <p>© 2025 KrovionX. All rights reserved.</p>
+</footer><script>
+document.addEventListener('DOMContentLoaded', function() {
+  const currentPage = location.pathname.split('/').pop() || 'index.html';
+  const navLinks = document.querySelectorAll('nav a, .navbar a');
+  navLinks.forEach(link => {
+    const linkPage = link.getAttribute('href');
+    if (linkPage === currentPage) link.classList.add('active');
+  });
+});
+</script>
+<!-- Osano Cookie Consent Banner START (Compliant Version) -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+// This function will contain all scripts that set non-essential cookies.
+// It is called only AFTER the user clicks "Accept".
+function runCookieDependentScripts() {
+    console.log("Cookie consent has been given. Running ad and analytics scripts.");
+
+    // IMPORTANT: When you get your scripts from Google AdSense and Google Analytics,
+    // you will paste them here. Do NOT put them in the <head> of your document.
+    
+    // --- PASTE GOOGLE ANALYTICS SCRIPT HERE ---
+    
+
+
+    // --- PASTE GOOGLE ADSENSE SCRIPT HERE ---
+    
+}
+
+// Initialize the cookie consent banner
+window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+      // --- VISUAL SETTINGS ---
+      "palette": {
+        "popup": {
+          "background": "#161624", 
+          "text": "#dddddd"       
+        },
+        "button": {
+          "background": "#e01515", 
+          "text": "#ffffff"       
+        }
+      },
+      "theme": "classic",             
+      "position": "bottom-right",     
+
+      
+      "type": "opt-in", 
+
+      // --- TEXT & LINKS ---
+      "content": {
+        "message": "This site uses cookies for analytics and personalized advertising. By clicking “Accept”, you agree to their use.",
+        "allow": "Accept",
+        "deny": "Decline",
+        "link": "Learn More",
+        "href": "cookie.html" 
+      },
+
+      // --- CONSENT LOGIC ---
+      
+      onStatusChange: function(status) {
+        if (this.hasConsented()) {
+          runCookieDependentScripts();
+        }
+      },
+
+      onInitialise: function(status) {
+        if (this.hasConsented()) {
+          runCookieDependentScripts();
+        }
+      }
+    });
+});
+</script>
+<!-- Osano Cookie Consent Banner END -->
+</body>
+</html>
