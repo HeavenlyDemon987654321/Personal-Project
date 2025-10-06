@@ -483,5 +483,61 @@
     </div>
     <p>© 2025 KrovionX. All rights reserved.</p>
 </footer>
+    <!-- Osano Cookie Consent Banner START (Live Server Compliant Version) -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+// This function will contain all scripts that set non-essential cookies.
+function runCookieDependentScripts() {
+    console.log("Cookie consent has been given. Running ad and analytics scripts.");
+    // --- PASTE GOOGLE ADSENSE & ANALYTICS SCRIPTS HERE LATER ---
+}
+
+// Use DOMContentLoaded for reliability
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the cookie consent banner
+    window.cookieconsent.initialise({
+      // --- VISUAL SETTINGS ---
+      "palette": {
+        "popup": { "background": "#161624", "text": "#dddddd" },
+        "button": { "background": "#e01515", "text": "#ffffff" }
+      },
+      "theme": "classic",
+      "position": "bottom-right",
+
+      // --- COMPLIANCE SETTINGS ---
+      "type": "opt-in",
+
+      // --- TEXT & LINKS ---
+      "content": {
+        "message": "This site uses cookies for analytics and personalized advertising. By clicking “Accept”, you agree to their use.",
+        "allow": "Accept",
+        "deny": "Decline",
+        "link": "Learn More",
+        "href": "cookie.html"
+      },
+
+      // --- COOKIE SETTINGS (THE CRUCIAL FIX) ---
+      "cookie": {
+        "name": "KrovionX_CookieConsent", // A unique name for your cookie
+        "path": "/", // Set the cookie for the entire site
+        "domain": window.location.hostname // Set the cookie for the main domain
+      },
+
+      // --- CONSENT LOGIC ---
+      onStatusChange: function(status) {
+        if (this.hasConsented()) {
+          runCookieDependentScripts();
+        }
+      },
+      onInitialise: function(status) {
+        if (this.hasConsented()) {
+          runCookieDependentScripts();
+        }
+      }
+    });
+});
+</script>
+<!-- Osano Cookie Consent Banner END -->
 </body>
 </html>
