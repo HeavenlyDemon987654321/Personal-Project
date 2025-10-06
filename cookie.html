@@ -89,46 +89,30 @@ document.addEventListener('DOMContentLoaded', function() {
     if (linkPage === currentPage) link.classList.add('active');
   });
 });
-</script>
-<!-- Osano Cookie Consent Banner START (Compliant Version) -->
+</script><!-- Osano Cookie Consent Banner START (Live Server Compliant Version) -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
 <script>
 // This function will contain all scripts that set non-essential cookies.
-// It is called only AFTER the user clicks "Accept".
 function runCookieDependentScripts() {
     console.log("Cookie consent has been given. Running ad and analytics scripts.");
-
-    // IMPORTANT: When you get your scripts from Google AdSense and Google Analytics,
-    // you will paste them here. Do NOT put them in the <head> of your document.
-    
-    // --- PASTE GOOGLE ANALYTICS SCRIPT HERE ---
-    
-
-
-    // --- PASTE GOOGLE ADSENSE SCRIPT HERE ---
-    
+    // --- PASTE GOOGLE ADSENSE & ANALYTICS SCRIPTS HERE LATER ---
 }
 
-// Initialize the cookie consent banner
-window.addEventListener("load", function(){
+// Use DOMContentLoaded for reliability
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the cookie consent banner
     window.cookieconsent.initialise({
       // --- VISUAL SETTINGS ---
       "palette": {
-        "popup": {
-          "background": "#161624", 
-          "text": "#dddddd"       
-        },
-        "button": {
-          "background": "#e01515", 
-          "text": "#ffffff"       
-        }
+        "popup": { "background": "#161624", "text": "#dddddd" },
+        "button": { "background": "#e01515", "text": "#ffffff" }
       },
-      "theme": "classic",             
-      "position": "bottom-right",     
+      "theme": "classic",
+      "position": "bottom-right",
 
-      
-      "type": "opt-in", 
+      // --- COMPLIANCE SETTINGS ---
+      "type": "opt-in",
 
       // --- TEXT & LINKS ---
       "content": {
@@ -136,17 +120,22 @@ window.addEventListener("load", function(){
         "allow": "Accept",
         "deny": "Decline",
         "link": "Learn More",
-        "href": "cookie.html" 
+        "href": "cookie.html"
+      },
+
+      // --- COOKIE SETTINGS (THE CRUCIAL FIX) ---
+      "cookie": {
+        "name": "KrovionX_CookieConsent", // A unique name for your cookie
+        "path": "/", // Set the cookie for the entire site
+        "domain": window.location.hostname // Set the cookie for the main domain
       },
 
       // --- CONSENT LOGIC ---
-      
       onStatusChange: function(status) {
         if (this.hasConsented()) {
           runCookieDependentScripts();
         }
       },
-
       onInitialise: function(status) {
         if (this.hasConsented()) {
           runCookieDependentScripts();
@@ -157,4 +146,5 @@ window.addEventListener("load", function(){
 </script>
 <!-- Osano Cookie Consent Banner END -->
 </body>
+
 </html>
